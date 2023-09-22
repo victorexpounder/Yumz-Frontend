@@ -1,0 +1,178 @@
+.NavContainer{
+    width: 100%;
+    position: sticky;
+    .navContent{
+        display: flex;
+        
+        padding: 1.5rem 4rem;
+        justify-content: space-between;
+        @media (max-width : 900px) {
+            justify-content: space-between;
+            padding: 1.5rem 2rem;
+            
+        }
+
+        .navBranding{
+            display: flex;
+            gap: 1.2rem;
+            align-items: center;
+            width: fit-content;
+            .logo{
+                width: 2.8rem;
+                height: 2.8rem;
+                img{
+                    width: inherit;
+                    height: inherit;
+                }
+            }
+            h1{
+                font-family: 'Poppins';
+                font-size: 1.5em;
+                font-weight: 600;
+                line-height: 1.4rem;
+            }
+        }
+
+        .navLinks{
+            display: flex;
+            align-items: center;
+            @media (max-width : 900px) {
+                display: none;
+            }
+            ul{
+                list-style: none;
+                display: flex;
+                gap: 2.5rem;
+
+                li{
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.3rem;
+                    cursor: pointer;
+                    p{
+                        font-family: Poppins;
+                        font-size: 0.875rem;
+                        font-style: normal;
+                        font-weight: 500;
+                        line-height: 1.4rem;
+                        &.red{
+                            color: #EB5757;
+                        }
+                    }
+                    .dot{
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        
+                    }
+                }
+            }
+        }
+        .others{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+
+            .search{
+                cursor: pointer;
+            }
+
+            .bag{
+                cursor: pointer;
+            }
+
+            .loginButton{
+                display: flex;
+                width: 7.5rem;
+                height: 3rem;
+                background-color: #EB5757;
+                border-radius: 3rem;
+                padding: 0.6875rem 1.25rem;
+                justify-content: center;
+                align-items: center;
+                gap: 0.3rem;
+                cursor: pointer;
+
+                &:hover{
+                    background-color: #eb5757cf;
+                }
+
+                @media (max-width : 900px) {
+                    display: none;
+                }
+
+                p{
+                    font-family: Poppins;
+                    font-size: 0.875rem;
+                    font-style: normal;
+                    font-weight: 500;
+                    line-height: 1.4rem;
+                    color: #fff;
+                }
+            }
+            
+            
+        }
+        .toggleButton{
+            border: none;
+            background-image: none;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 100%;
+            
+
+            @media (min-width: 900px) {
+                display: none;
+            }
+
+            .toggle{
+                height: 2rem;
+                width: 2rem;
+            }
+            .hidden{
+                display: none;
+            }
+        }
+        
+    }
+
+}
+.draw{
+    background: transparent;
+
+.drawerContent {
+    
+    padding-top: 60px; /* Space for logo and title */
+    background-color: #EB5757; /* Set the background color */
+    color: #fff; /* Set the text color */
+    font-family: Arial, sans-serif;
+    height: 100%;
+    
+  
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+  
+      li {
+        padding: 10px 20px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+  
+        &:hover {
+          background-color: #EB5757; /* Darken the background color on hover */
+        }
+  
+        p {
+          margin: 0;
+        }
+      }
+    }
+}
+}
+  

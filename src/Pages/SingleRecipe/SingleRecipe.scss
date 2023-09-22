@@ -1,0 +1,117 @@
+.SRcontent{
+    width: 100%;
+    .cover{
+        width: 100%;
+        position: relative;
+        .coverImg{
+            width: 100%;
+            height: 160px;
+            background-position: center;
+            background-size: cover;
+        }
+        .favButton{
+            width: 48px;
+            height: 48px;
+            margin: 10px;
+            background: #fff;
+            border-radius: 50%;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            top: 0;
+            right: 0;
+        }
+    }
+    .details{
+        margin-top: 16px;
+        padding: 0 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        h1{
+            font-family: UberMove, sans-serif;    
+            font-size: 24px;
+            line-height: 28px;
+            font-weight: 700;
+           
+        }
+        .creatorTime{
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            h8{
+                font-family: UberMoveText, system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+                font-size: 14px;
+                line-height: 20px;
+                cursor: pointer;
+            }
+            strong{
+                color: #545454;
+                font-size: 14px;
+                display: flex;
+                align-items: center;
+                line-height: 20px;
+                margin-bottom: 5px;
+            }
+            p{
+                color: #545454;
+                font-family: UberMoveText, system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+                font-size: 14px;
+                line-height: 20px;
+            }
+        }
+
+        p{
+            font-size: 14px;
+            color: #545454;
+            line-height: 20px;
+            font-family: UberMoveText, system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+        }
+
+        .figures{
+            display: flex;
+            gap: 10px;
+            color: #545454;
+            .likes{
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                cursor: pointer;
+                .likeButton{
+                    color: #EB5757;
+                }
+            }
+            .comments{
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                cursor: pointer;
+            }
+        }
+    }
+    @media (min-width: 700px) {
+        .details{
+            padding: 0 40px;
+            margin-top: 24px;
+            gap: 15px;
+            h1{
+                line-height: 36px;
+                font-size: 36px;
+            }
+            .creatorTime{
+                h8{
+                    font-size: 20px;
+                }
+                .avatar{
+                    width: 45px;
+                    height: 45px;
+                }
+            }
+            p{
+                font-size: 20px;
+            }
+        }
+    }
+}

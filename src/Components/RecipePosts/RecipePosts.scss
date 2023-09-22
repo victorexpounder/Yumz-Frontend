@@ -1,0 +1,108 @@
+.recipePostsContainer{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding:16px;
+    box-sizing: border-box;
+    .recipePostsContent{
+        width: 100%;
+        .recipePost{
+            margin-bottom: 24px;
+            position: relative;
+            .coverImg{
+                width: 100%;
+                height: 148px;
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+                position: relative;
+                border-radius: 12px;
+                cursor: pointer;
+                
+            }
+            .favButton{
+                color: #fff;
+                display: flex;
+                position: absolute;
+                top: 0;
+                right: 3px;
+                justify-content: flex-end;
+                padding: 12px 12px 12px 0;
+                background: radial-gradient(at center center, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+                cursor: pointer;
+            }
+            .recipeDetails{
+                margin-top: 10px;
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+                .nameD{
+                    display: flex;
+                    justify-content: space-between;
+                    h1{
+                        font-family: UberMoveText, system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+                        font-size: 20px;
+                        line-height: 20px;
+                        font-weight: 500;
+                        cursor: pointer;
+                    }
+                }
+                .creatorTime{
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
+                    h8{
+                        font-family: UberMoveText, system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+                        font-size: 14px;
+                        line-height: 20px;
+                        cursor: pointer;
+                    }
+                    strong{
+                        color: #545454;
+                        font-size: 14px;
+                        display: flex;
+                        align-items: center;
+                        line-height: 20px;
+                        margin-bottom: 5px;
+                    }
+                    p{
+                        color: #545454;
+                        font-family: UberMoveText, system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+                        font-size: 14px;
+                        line-height: 20px;
+                    }
+                }
+                .figures{
+                    display: flex;
+                    gap: 10px;
+                    color: #545454;
+                    .likes{
+                        display: flex;
+                        align-items: center;
+                        gap: 5px;
+                        cursor: pointer;
+                        .likeButton{
+                            color: #EB5757;
+                        }
+                    }
+                    .comments{
+                        display: flex;
+                        align-items: center;
+                        gap: 5px;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+        @media (min-width: 900px) {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+    }
+}
+
+.clickedColor{
+    color: #EB5757;
+}

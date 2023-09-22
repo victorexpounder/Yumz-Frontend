@@ -1,0 +1,119 @@
+.nav{
+    padding: 0 15px;
+    max-width: 1920px;
+    .navContent{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 80px;
+        .hamlogo{
+            display: flex;
+            justify-content: center;
+            flex: 1.3;
+            justify-content: space-between;
+            button{
+                border: none;
+                background: none;
+                cursor: pointer;
+            }
+            h1{
+                font-family: 'Poppins';
+                font-size: 1.5em;
+                font-weight: 600;
+                line-height: 1.4rem;
+                color: #424242;
+                span{
+                    color: #EB5757;
+                }
+            }
+        }
+
+        .navSearchBar{
+            width: 100%;
+            padding: 5%;
+            @media (max-width: 900px) {
+                display: none;
+            }
+        }
+
+        .avatarCon{
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            cursor: pointer;
+        }
+    }
+
+    
+}
+.drawApp{
+    background: transparent;
+
+.drawerContentApp{
+    
+    padding: 25px; /* Space for logo and title */
+    background-color: #EB5757; /* Set the background color */
+    color: #fff; /* Set the text color */
+    font-family: Arial, sans-serif;
+    height: 100%;
+    
+  
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      
+
+      .account{
+        padding-top: 0;
+      }
+  
+      li {
+        padding-top: 30px;
+        font-size: 16px;
+        line-height: 30px;
+        font-weight: 500;
+        font-family: 'Poppins';
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+        display: flex;
+        gap: 16px;
+
+
+        &:hover {
+          background-color: #EB5757; /* Darken the background color on hover */
+        }
+  
+        p {
+          margin: 0;
+        }
+        a{
+            text-decoration: none;
+            
+        }
+      }
+
+      
+    }
+}
+}
+
+@media (min-width: 900px) {
+    .nav{
+        padding: 0 40px;
+        &.sticky{
+            background-color: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+        
+       
+        .navContent{
+            .hamlogo{
+                justify-content: unset;
+                gap: 32px;
+            }
+        }
+    }
+}

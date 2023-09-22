@@ -1,0 +1,170 @@
+.profileNavbar{
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    z-index: 100;
+}
+
+.profileContent{
+    
+    .profileHeader{
+        width: 100%;
+        background-image: url("https://images.pexels.com/photos/18185493/pexels-photo-18185493/free-photo-of-fashion-man-people-relaxation.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load");
+        height: 120px;
+        background-position: center;
+        background-size: cover;
+        @media (min-width: 1230px) {
+            height: 240px;
+        }
+    }
+
+    .profileAvatarCon{
+        position: absolute;
+        top: 150px;
+        left: 30px;
+        border: 5px solid #fff;
+        border-radius: 100%;
+        @media (min-width: 1230px) {
+            top: 250px;
+        }
+    }
+
+    .profiledetails{
+       width: 100%;
+        .profiledetailsinner{
+            padding: 50px 32px;
+            .name{
+                font-family: 'Poppins', sans-serif;
+                font-weight: 600;
+                padding-top: 22px;
+                font-size: 24px;
+                line-height: 32px;
+            }
+            .handle{
+                font-family: 'Poppins', sans-serif;
+                font-weight: 100;
+                margin-bottom: 16px;
+                
+            }
+            .actionButtons{
+                display: flex;
+                gap: 15px;
+                margin-bottom: 16px;
+                .followButton{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border-radius: 6px;
+                    background-color: #EB5757;
+                    color: #fff;
+                    height: 32px;
+                    width: 96px;
+                    line-height: 30px;
+                    max-width: 200px;
+                    font-family: 'Poppins', sans-serif;
+                    font-weight: 300;
+                    cursor: pointer;
+                    padding: 0 11px;
+                    &:hover{
+                        background-color: #d53f3f;
+                       
+                    }
+                }
+                .moreButton{
+                    font-size: 15px;
+                    font-family: 'Poppins', sans-serif;
+                    font-weight: 600;
+                    cursor: pointer;
+                }
+            }
+            .description{
+                font-family: 'Poppins', sans-serif;
+                font-size: 15px;
+                word-wrap: break-word;
+                textarea{
+                    font-family: 'Poppins', sans-serif;
+                    font-size: 15px;
+                    font-weight: 300;
+                    word-wrap: break-word;
+                    width: 100%;
+                    padding: 5px;
+                    resize: none;
+                    &:focus{
+                        outline: #EB5757;
+                        border: 1px solid #EB5757;
+                        border-radius: 5px;
+                    }
+                }
+                .descP{
+                    font-size: 15px;
+                    padding: 5px;
+                    font-family: 'Poppins', sans-serif;
+                    font-weight: 300;
+                }
+                .gray{
+                    padding: 5px;
+                    color: gray;
+                }
+            }
+            .stats{
+                display: flex;
+                margin: 16px 0;
+                gap: 24px;
+                font-family: 'Poppins', sans-serif;
+                font-size: 15px;
+                span{
+                    font-weight: 600;
+                }
+            }
+        }
+
+        .postSections{
+            width: 100%;
+            .postsHeader{
+                padding: 0 25px;
+                display: flex;
+                gap: 20px;
+                font-size: 15px;
+                line-height: 24px;
+                font-family: 'Poppins', sans-serif;
+                font-weight: 600;
+                position: sticky;
+                top: 80px;
+                z-index: 999;
+                background: #fff;
+                border-top: 1px solid rgb(222, 221, 221);
+                border-bottom: 1px solid rgb(222, 221, 221);
+                cursor: pointer;
+                
+                .posts{
+                    height: 100%;
+                    padding: 10px 0;
+                    
+                }
+                .favorites{
+                    height: 100%;
+                    padding: 10px 0;
+                   
+                }
+                .selected{
+                    border-bottom: 2px solid #000;
+                }
+            }
+        
+            .postsContainer{
+                padding: 16px;
+                
+                
+            }
+        }
+        @media (min-width: 1230px) {
+            display: flex;
+            width: 100%;
+            .postSections{
+                .postsContainer{
+                    padding: 0;
+                }
+            }
+        }
+    }
+} 

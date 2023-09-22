@@ -1,0 +1,156 @@
+.servicesContent{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.44rem;
+    .headingContainer{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.25rem;
+        p{
+            color:  #EB5757;
+            font-family: Poppins;
+            font-size: 1.125rem;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 1.4rem; /* 124.444% */
+            letter-spacing: 0.18rem;
+        }
+        h1{
+            width: 33.25rem;
+            height: 8.8125rem;
+            color:  #333;
+            text-align: center;
+            font-family: Poppins;
+            font-size: 2.8125rem;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 3.75rem;
+        }
+    }
+    .services{
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        box-sizing: border-box;
+        padding:0 5rem;
+        
+        .eto{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            
+            img{
+                
+            }
+            
+        }
+        .text{
+            h1{
+                color: #000;
+                font-family: Poppins;
+                font-size: 1.75rem;
+                font-style: normal;
+                font-weight: 700;
+                line-height: 4.375rem;
+                text-align: center;
+            }
+            p{
+                width: 19.625rem;
+                height: 3.9375rem;
+                color:  #333;
+                text-align: center;
+                font-family: Poppins;
+                font-size: 1.125rem;
+                font-style: normal;
+                font-weight: 500;
+                line-height: 1.875rem;
+            }
+        }
+    }
+
+    @media (min-width: 1000px) {
+        @media (max-height: 670px) {
+                gap: 0rem;
+            .headingContainer{
+                gap: 0.25rem;
+                
+                p{
+                        
+                        
+                    font-size: 0.725rem;
+                    line-height: 1.4rem; /* 124.444% */
+                    letter-spacing: 0.18rem;
+                }
+                h1{
+                    width: 23.25rem;
+                    height: 8.8125rem;
+                    color:  #333;
+                    text-align: center;
+                    font-family: Poppins;
+                    font-size: 1.8125rem;
+                    font-style: normal;
+                    font-weight: 700;
+                    line-height: 3.75rem;
+                }
+               
+            }
+            
+        
+        }
+    }
+
+    @media (max-width: 900px) {
+        .headingContainer{
+            gap: 0.25rem;
+            
+            p{
+                
+                
+                
+            }
+            h1{
+                width: 23.25rem;
+                height: 8.8125rem;
+                color:  #333;
+                text-align: center;
+                font-family: Poppins;
+                font-size: 2.2125rem;
+                font-style: normal;
+                font-weight: 700;
+                line-height: 3.75rem;
+            }
+        }
+        .services{
+            flex-direction: column;
+        }
+    }
+    @media (max-width: 700px) {
+        .headingContainer{
+            gap: 0.25rem;
+            
+            p{
+                
+                
+                font-size: 0.725rem;
+                line-height: 1.4rem; /* 124.444% */
+                letter-spacing: 0.18rem;
+            }
+            h1{
+                width: 23.25rem;
+                height: 8.8125rem;
+                color:  #333;
+                text-align: center;
+                font-family: Poppins;
+                font-size: 1.8125rem;
+                font-style: normal;
+                font-weight: 700;
+                line-height: 3.75rem;
+            }
+        }
+    }
+}
