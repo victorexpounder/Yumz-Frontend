@@ -65,10 +65,10 @@
                     font-weight: 300;
                     cursor: pointer;
                     padding: 0 11px;
-                    &:hover{
-                        background-color: #d53f3f;
-                       
+                    &.followed{
+                        background-color: gray;
                     }
+                    
                 }
                 .moreButton{
                     font-size: 15px;

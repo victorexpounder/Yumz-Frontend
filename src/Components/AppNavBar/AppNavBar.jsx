@@ -13,8 +13,9 @@ import SupportIcon from '@mui/icons-material/Support';
 import DinnerDiningIcon from '@mui/icons-material/DinnerDining';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { SearchBar } from '../SearchBar/SearchBar';
+import { useSelector } from 'react-redux';
 export const AppNavBar = () => {
-
+    const user = useSelector((state) => state.user);
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [isSticky, setIsSticky] = useState(false);
 
@@ -148,7 +149,7 @@ export const AppNavBar = () => {
                         {/* Details */}
                     <div className="text">
                     <p>
-                        Victor
+                       {user.firstName}
                     </p>
                     <a href="">Manage account</a>
                     </div>
@@ -168,7 +169,7 @@ export const AppNavBar = () => {
                       </li>
                   </Link>
 
-                  <Link to={'/services'} style={{textDecoration: "none", color:'#fff'}}>
+                  <Link to={'/meal-planning'} style={{textDecoration: "none", color:'#fff'}}>
                       <li>
                           <DinnerDiningIcon/>
                           <p>Meal Planning</p>

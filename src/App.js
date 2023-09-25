@@ -14,6 +14,7 @@ import { DashBoard } from "./Pages/DashBoard/DashBoard";
 import { Favorites } from "./Pages/Favorites/Favorites";
 import { SingleRecipe } from "./Pages/SingleRecipe/SingleRecipe";
 import { Profile } from "./Pages/Profile/Profile";
+import { MealPlanning } from "./Pages/MealPlanning/MealPlanning";
 
 function App(){
     return(
@@ -28,7 +29,8 @@ function App(){
                     <Route path="feed" element={<DashBoard/>} />
                     <Route path="favorites" element={<Favorites/>} />
                     <Route path="recipe Single" element={<SingleRecipe/>} />
-                    <Route path="profile" element={<Profile isMine={false}/>} />
+                    <Route path="profile" element={<Profile isMine={true}/>} />
+                    <Route path="meal-planning" element={<MealPlanning/>} />
                 </Route>
                 </Routes>
             </BrowserRouter>
