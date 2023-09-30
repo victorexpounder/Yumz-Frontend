@@ -1,3 +1,8 @@
+# Fullstack Food Recipe Sharing App
+
+Frontend of Fullstack social food recipe sharing app that allows users share recipes, connect with one another and build awesome social presence by showing off their cognitive kitchen skills.
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
