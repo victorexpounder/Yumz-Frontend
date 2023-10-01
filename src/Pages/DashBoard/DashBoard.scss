@@ -20,6 +20,12 @@
         border: none;
         margin: 0 -16px;
     }
+    .addButton{
+        position: fixed;
+        bottom: 1.5rem;
+        right: 1rem;
+        color: #EB5757;
+    }
     @media (min-width: 900px) {
         padding: 0 40px;
         .contentSearch{
@@ -29,6 +35,9 @@
             margin-top: 24px;
             background-color: #E2E2E2;
             height: 1px;
+        }
+        .addButton{
+            display: none;
         }
     }
 }

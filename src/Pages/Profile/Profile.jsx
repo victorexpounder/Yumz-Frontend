@@ -4,20 +4,28 @@ import Avatar from '@mui/material/Avatar';
 import girl1 from '../../Assets/girl1.png'
 import './Profile.scss'
 import { RecipePosts } from '../../Components/RecipePosts/RecipePosts';
+import { useDispatch, useSelector } from 'react-redux';
+import { addHello, update, updateDescription } from '../../Redux/userSlice';
 export const Profile = ({isMine}) => {
-    const details = {
-        Firstname:'Victor',
-        Lastname:'Eze',
-        handle:'victorcook',
-        followers : 30,
-        following : 0,
 
-     }
-    const {Firstname, Lastname, handle, followers, following} = details;
-    const [editDescription, setEditDescription] = useState(false)
-    const [description, setdescription] = useState('');
+    console.log("rerendered")
+
+    const user = useSelector((state) => state.user);
+    const dispatch = useDispatch();
+    const {followers, following} = user;
+    const [firstName, setFirstname] = useState(user.firstName);
+    const [lastName, setLastname] = useState(user.lastName);
+    const [handle, setHandle] = useState(user.handle);
+    const [description, setdescription] = useState(user.description);
+    const [editDescription, setEditDescription] = useState(false);
     const [selected, setSelected] = useState('posts');
     const [followed, setFollowed] = useState(false);
+
+    const handleDescriptionUpdate = (e) =>{
+        e.preventDefault();
+        dispatch(updateDescription ({description}));
+        setEditDescription(false);
+    }
 
   return (
     <div>
@@ -32,16 +40,16 @@ export const Profile = ({isMine}) => {
             <div className="profileAvatarCon">
             <Avatar
                 sx={{ bgcolor: '#EB5757', height : '110px', width: '110px', fontSize: "48px"}}
-                alt="Remy Sharp"
+                alt={firstName}
 
                 >
-                {Firstname.charAt(0)} 
+                {firstName.charAt(0)} 
                 </Avatar>
             </div>
 
             <div className="profiledetails">
                 <div className="profiledetailsinner">
-                    <div className="name"> {Firstname} {Lastname} </div>
+                    <div className="name"> {user.firstName} {lastName} </div>
                     <p className='handle'>@{handle}</p>
                     {!isMine &&
                     <div className="actionButtons">
@@ -53,12 +61,12 @@ export const Profile = ({isMine}) => {
                     <div className="description">
                         {editDescription && isMine===true?
                         (
-                            <textarea type="text" placeholder='Add a description' onBlur={()=>{setEditDescription(false)}} autoFocus value={description} onChange={(event)=>{setdescription(event.target.value)}} rows={1} spellCheck/>
+                            <textarea type="text" placeholder='Add a description' onBlur={handleDescriptionUpdate} autoFocus value={description} onChange={(event)=>{setdescription(event.target.value)}} rows={1} spellCheck/>
                         )
                         :
                         (
                             description.length > 0 || isMine? 
-                            <p onClick={()=>{setEditDescription(true)}} className={`${description.length > 0? 'descP' : 'gray'}`}> {description.length > 0? description : 'Add a description'} </p>
+                            <p onClick={()=>{setEditDescription(true)}} className={`${description.length > 0? 'descP' : 'gray'}`}> {user.description.length > 0? user.description : 'Add a description'} </p>
                             :
                             ''
                         )

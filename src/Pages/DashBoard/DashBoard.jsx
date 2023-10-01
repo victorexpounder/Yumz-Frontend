@@ -5,6 +5,7 @@ import { Categories } from '../../Components/Categories/Categories'
 import './DashBoard.scss'
 import { SearchBar } from '../../Components/SearchBar/SearchBar'
 import { RecipePosts } from '../../Components/RecipePosts/RecipePosts'
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 export const DashBoard = () => {
 
   const [isSticky, setIsSticky] = useState(false);
@@ -47,6 +48,10 @@ export const DashBoard = () => {
 
         {/* Recipe Posts */}
         <RecipePosts/>
+
+        <div className="addButton">
+            <AddOutlinedIcon style={{fontSize: '2.5rem', backgroundColor: '#EB5757', color: '#fff', borderRadius: '50%', padding: '0.3rem'}} />
+        </div>
       </div>
     </div>
   )

@@ -12,6 +12,9 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import SupportIcon from '@mui/icons-material/Support';
 import DinnerDiningIcon from '@mui/icons-material/DinnerDining';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import IconButton from '@mui/material/IconButton';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import Tooltip from '@mui/material/Tooltip';
 import { SearchBar } from '../SearchBar/SearchBar';
 import { useSelector } from 'react-redux';
 export const AppNavBar = () => {
@@ -97,6 +100,14 @@ export const AppNavBar = () => {
 
             {/* Avatar  */}
             <div className="avatarCon">
+              <div className="addbutton">
+
+                <Tooltip title="create">
+                  <IconButton>
+                    <AddBoxIcon style={{color: 'EB5757', fontSize: '2rem'}}/>
+                  </IconButton>
+                </Tooltip>
+              </div>
               <Link to={'/profile'}>
                 <StyledBadge
                   overlap="circular"

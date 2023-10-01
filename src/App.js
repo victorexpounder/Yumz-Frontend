@@ -1,20 +1,43 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Home } from "./Pages/Home/Home";
+import { HomePage } from "./Pages/HomePage/HomePage";
+import {
+    BrowserRouter,
+    createBrowserRouter,
+    Navigate,
+    Route,
+    RouterProvider,
+    Routes,
+  } from "react-router-dom";
+import { Services } from "./Pages/ServicesPage/Services";
+import { Login } from "./Pages/Login/Login";
+import { SignUp } from "./Pages/SignUp/SignUp";
+import { DashBoard } from "./Pages/DashBoard/DashBoard";
+import { Favorites } from "./Pages/Favorites/Favorites";
+import { SingleRecipe } from "./Pages/SingleRecipe/SingleRecipe";
+import { Profile } from "./Pages/Profile/Profile";
+import { MealPlanning } from "./Pages/MealPlanning/MealPlanning";
 
+function App(){
+    return(
+         <div className="container">
+            <BrowserRouter>
+                <Routes>
+                <Route path="/">
+                    <Route index element={<HomePage></HomePage>} />
+                    <Route path="services" element={<Services></Services>} />
+                    <Route path="login" element={<Login></Login>} />
+                    <Route path="signUp" element={<SignUp></SignUp>} />
+                    <Route path="feed" element={<DashBoard/>} />
+                    <Route path="favorites" element={<Favorites/>} />
+                    <Route path="recipe Single" element={<SingleRecipe/>} />
+                    <Route path="profile" element={<Profile isMine={true}/>} />
+                    <Route path="meal-planning" element={<MealPlanning/>} />
+                </Route>
+                </Routes>
+            </BrowserRouter>
+            
+         </div>
 
-function App() {
-  return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/">
-            <Route index element={<Home/>}></Route>
-          </Route>
-        </Routes>
-      </BrowserRouter>
-      
-    </div>
-  );
+         
+    )
 }
-
 export default App;
