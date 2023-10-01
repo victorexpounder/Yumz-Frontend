@@ -1,0 +1,120 @@
+.header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    background-color: #FAF2FF;
+    .HeaderContainer{
+        display: flex;
+        justify-content: space-between;
+        box-sizing: border-box;
+        width: 100%;
+        padding: 1rem 2rem;
+        align-items: center;
+        max-width: 1300px;
+        .logo{
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            line-height: normal;
+            letter-spacing: -0.0425rem;
+            a{
+                text-decoration: none;
+                color: #000;
+            }
+        }
+        .navLinks{
+            display: flex;
+            gap: 4.3rem;
+            ul{
+                display: flex;
+                list-style: none;
+                justify-content: space-between;
+                gap: 4.3rem;
+                a{
+                    text-decoration: none;
+                    color: #000;
+                    font-family: 'Work Sans', sans-serif;
+                    font-size: 1rem;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: normal;
+                    letter-spacing: -0.03rem;
+                    transition: 0.5s;
+                    &:hover{
+                       color: #330E4D;
+                       scale: 1.2;
+                    }
+                }
+            }
+    
+            .registerButton{
+                background: #330E4D;
+                padding: 0.1rem 1.5rem;
+                border-radius: 0.5rem;
+                cursor: pointer;
+                &:hover{
+                    background: #561882;
+                }
+                p{
+                    color: #fff;
+                    font-family: 'Work Sans', sans-serif;
+                    font-size: 1rem;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: normal;
+                }
+            }
+        }
+        
+        .menuIcon{
+            display: none;
+        }
+       
+        // mobile view
+
+        @media (max-width: 800px) {
+            padding: 1rem 0.5rem;
+            .navLinks{
+                display: none;
+                cursor: pointer;
+            }
+            .menuIcon{
+                display: block;
+            }
+        }
+    }
+}
+
+.drawer{
+    .drawerContainer{
+        padding-top: 60px; /* Space for logo and title */
+        background-color: #330E4D; /* Set the background color */
+        color: #fff; /* Set the text color */
+        font-family: Arial, sans-serif;
+        height: 100%;
+        
+        ul {
+          list-style-type: none;
+          padding: 0;
+          margin: 0;
+      
+          li {
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+      
+            &:hover {
+              background-color: #EB5757; /* Darken the background color on hover */
+            }
+      
+            p {
+              margin: 0;
+            }
+          }
+        }
+    }
+}

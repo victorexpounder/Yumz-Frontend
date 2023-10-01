@@ -1,0 +1,140 @@
+.infoSection{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.infoContainer{
+    box-sizing: border-box;
+    display: flex;
+    padding: 2rem 3rem;
+    width: 100%;
+    gap: 2rem;
+    max-width: 2000px;
+    .leftDetails{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 2rem;
+        .detailsContent{
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            h1{
+                margin: 0;
+                color: #000;
+                font-family: 'Montserrat', sans-serif;
+                font-size: 2.5rem;
+                font-style: normal;
+                font-weight: 600;
+                line-height: normal;
+                letter-spacing: 0.125rem;
+            }
+            p{
+                color: #000;
+                font-family: 'Montserrat', sans-serif;
+                font-size: 1.25rem;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+                letter-spacing: 0.025rem;
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
+        .ctas{
+            display: flex;
+            gap: 2rem;
+            .startLearning{
+                padding: 0.8125rem 1.5625rem;
+                border-radius: 0.5rem;
+                background-color: #330E4D;
+                color: #fff;
+                font-family: Montserrat;
+                font-size: 1rem;
+                font-style: normal;
+                font-weight: 600;
+                line-height: normal;
+                transition: 0.5s;
+                cursor: pointer;
+                &:hover{
+                    background-color: #441a62;
+                }
+            }
+            .learnMore{
+                padding: 0.8125rem 1.5625rem;
+                border-radius: 0.5rem;
+                border: 0.8px solid #330E4D;
+                color: #330E4D;
+                font-family: Montserrat;
+                font-size: 1rem;
+                font-style: normal;
+                font-weight: 600;
+                line-height: normal;
+                transition: 0.5s;
+                cursor: pointer;
+                &:hover{
+                    background-color: #330E4D;
+                    color: #fff;
+                }
+            }
+        }
+    }
+    .rightImg{
+        img{
+            width: 20rem;
+            height: 20rem;
+        }
+    }
+    @media (min-width: 1280px) {
+        width: 1170px;
+        .rightImg{
+            img{
+                width: 25rem;
+                height: 25rem;
+            }
+        }
+    }
+
+    @media (max-width: 820px) {
+        
+        flex-direction: column;
+        .rightImg{
+            img{
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+    @media (max-width: 767px) {
+        padding: 1rem 0.5rem;
+        flex-direction: column;
+    }
+    @media (max-width: 450px) {
+        padding: 1rem 0.5rem;
+        flex-direction: column;
+        .leftDetails{
+            gap: 1rem;
+            .detailsContent{
+                gap: 0.5rem;
+                h1{
+                    font-size: 2rem;
+                }
+                p{
+                    font-size: 0.8rem;
+                }
+            }
+            .ctas{
+                flex-direction: column;
+                .startLearning{
+                    width: fit-content;
+                }
+                .learnMore{
+                    width: fit-content;
+                }
+            }
+        }
+    }
+}
