@@ -15,9 +15,9 @@
         border-radius: 500px;
         box-sizing: border-box;
         height: 48px;
-        form{
+        form{ 
             width: 100%;
-            input{
+            .textField{
                 font-size: 16px;
                 font-family: UberMoveText, sans-serif;
                 line-height: 24px;
@@ -25,7 +25,7 @@
                 width: 100%;
                 background: transparent;
                 border: none;
-                outline: none;
+                outline: transparent;
                 
             }
         }

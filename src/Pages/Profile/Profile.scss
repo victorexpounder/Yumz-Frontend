@@ -24,6 +24,13 @@
         left: 30px;
         border: 5px solid #fff;
         border-radius: 100%;
+        .cameraIcon{
+            position: absolute;
+            bottom: 0px;
+            right: 0;
+            color: #ffffff;
+            
+        }
         @media (min-width: 1230px) {
             top: 250px;
         }

@@ -16,12 +16,13 @@ import IconButton from '@mui/material/IconButton';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import Tooltip from '@mui/material/Tooltip';
 import { SearchBar } from '../SearchBar/SearchBar';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../Redux/userSlice';
 export const AppNavBar = () => {
     const user = useSelector((state) => state.user);
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [isSticky, setIsSticky] = useState(false);
-
+    const dispatch = useDispatch();
     const handleDrawerToggle = () => {
         setDrawerOpen(!drawerOpen);
       };
@@ -194,7 +195,7 @@ export const AppNavBar = () => {
                       </li>
                       </Link>
 
-                  <Link to={'/login'} style={{textDecoration: "none", color:'#fff'}}>
+                  <Link  style={{textDecoration: "none", color:'#fff'}} onClick={()=> dispatch(logout())}>
                       <li>
                           <ExitToAppIcon/>
                           <p>Sign Out</p>

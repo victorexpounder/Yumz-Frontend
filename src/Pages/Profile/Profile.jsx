@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AppNavBar } from '../../Components/AppNavBar/AppNavBar'
 import Avatar from '@mui/material/Avatar';
 import girl1 from '../../Assets/girl1.png'
@@ -6,26 +6,48 @@ import './Profile.scss'
 import { RecipePosts } from '../../Components/RecipePosts/RecipePosts';
 import { useDispatch, useSelector } from 'react-redux';
 import { addHello, update, updateDescription } from '../../Redux/userSlice';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+import { IconButton } from '@mui/material';
 export const Profile = ({isMine}) => {
-
     console.log("rerendered")
-
     const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
-    const {followers, following} = user;
-    const [firstName, setFirstname] = useState(user.firstName);
-    const [lastName, setLastname] = useState(user.lastName);
-    const [handle, setHandle] = useState(user.handle);
-    const [description, setdescription] = useState(user.description);
     const [editDescription, setEditDescription] = useState(false);
     const [selected, setSelected] = useState('posts');
     const [followed, setFollowed] = useState(false);
-
+    const { userID } = useParams();
+    const currentUser = useSelector((state) => state.user.currentUser);
+    const [profileDetails, setProfileDetails] = useState(currentUser)
+    const {followers, following, firstName, lastName, handle, description} = profileDetails;
+    const [descriptionedit, setDescriptionedit] = useState(description);
     const handleDescriptionUpdate = (e) =>{
         e.preventDefault();
         dispatch(updateDescription ({description}));
         setEditDescription(false);
     }
+
+    const fetchUser = async() =>{
+        if(!isMine)
+        {
+            try {
+                const res = await axios.get(`/users/find/${userID}`);
+                setProfileDetails(res.data);
+            } catch (error) {
+                alert(error);
+                setProfileDetails(currentUser);
+
+            }
+            
+        }
+    }
+
+    useEffect(()=>{
+
+        fetchUser();
+    }, [isMine])
+    
 
   return (
     <div>
@@ -39,12 +61,14 @@ export const Profile = ({isMine}) => {
 
             <div className="profileAvatarCon">
             <Avatar
-                sx={{ bgcolor: '#EB5757', height : '110px', width: '110px', fontSize: "48px"}}
-                alt={firstName}
-
-                >
+            sx={{ bgcolor: '#EB5757', height : '110px', width: '110px', fontSize: "48px"}}
+            alt={firstName}
+            >
                 {firstName.charAt(0)} 
-                </Avatar>
+            </Avatar>
+                <IconButton className="cameraIcon">
+                    <AddAPhotoIcon/> 
+                </IconButton>
             </div>
 
             <div className="profiledetails">
@@ -61,12 +85,12 @@ export const Profile = ({isMine}) => {
                     <div className="description">
                         {editDescription && isMine===true?
                         (
-                            <textarea type="text" placeholder='Add a description' onBlur={handleDescriptionUpdate} autoFocus value={description} onChange={(event)=>{setdescription(event.target.value)}} rows={1} spellCheck/>
+                            <textarea type="text" placeholder='Add a description' onBlur={handleDescriptionUpdate} autoFocus value={descriptionedit} onChange={(event)=>{setDescriptionedit(event.target.value)}} rows={1} spellCheck/>
                         )
                         :
                         (
-                            description.length > 0 || isMine? 
-                            <p onClick={()=>{setEditDescription(true)}} className={`${description.length > 0? 'descP' : 'gray'}`}> {user.description.length > 0? user.description : 'Add a description'} </p>
+                            description?.length > 0 || isMine? 
+                            <p onClick={()=>{setEditDescription(true)}} className={`${description?.length > 0? 'descP' : 'gray'}`}> {description?.length > 0? description : 'Add a description'} </p>
                             :
                             ''
                         )
@@ -75,7 +99,7 @@ export const Profile = ({isMine}) => {
 
                     <div className="stats">
                         <div className="followers"> <span>{followers}</span> folloewrs</div>
-                        <div className="following"> <span>{following}</span>  following</div>
+                        <div className="following"> <span>{following?.length}</span>  following</div>
                     </div>
                 </div>
                 <div className="postSections">

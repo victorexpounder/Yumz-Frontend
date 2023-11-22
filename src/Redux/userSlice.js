@@ -1,8 +1,10 @@
-import { createSlice} from '@reduxjs/toolkit'
+import { combineReducers, createSlice} from '@reduxjs/toolkit'
 
-export const userSlice =  createSlice({
-    name: 'user',
-    initialState : {
+
+    const initialState =  {
+        currentUser : null,
+        loading : false,
+        error : false,
         firstName : 'Victor',
         lastName : 'Eze',
         email : 'victorexpounder@gmail.com',
@@ -10,8 +12,31 @@ export const userSlice =  createSlice({
         description: 'i am cook',
         followers : 30,
         following : 0,
-    },
+    }
+
+    
+
+export const userSlice =  createSlice({
+    name: 'user',
+    initialState,
     reducers: {
+        loginLoading : (state) =>{
+            state.loading = true
+        },
+
+        loginSuccess : (state, action) =>{
+            state.loading = false;
+            state.currentUser = action.payload
+        },
+
+        loginFailure : (state) =>{
+            state.loading = false
+            state.error = true
+        },
+        logout : (state) =>{
+            return initialState;
+        },
+
         update : (state, action) =>{
             state.firstName = action.payload.firstName
             state.lastName = action.payload.lastName
@@ -26,5 +51,5 @@ export const userSlice =  createSlice({
     }
 })
 
-export const {update, updateDescription} = userSlice.actions;
+export const {update, updateDescription, loginLoading, loginSuccess, loginFailure, logout} = userSlice.actions;
 export default userSlice.reducer;
