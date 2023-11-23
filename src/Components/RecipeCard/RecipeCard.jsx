@@ -9,15 +9,17 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Avatar from '@mui/material/Avatar';
 import axios from 'axios';
 import {format} from 'timeago.js'
+import { useSelector } from 'react-redux';
 export const RecipeCard = ({recipeData, isMine, isFavorites}) => {
 
   const {title,imgUrl,likes, userId, createdAt} = recipeData;
   const [liked, setLiked] = useState(false);
   const [favorited, setFavorited] = useState(false);
   const [Creator, setcreator] = useState()
+  const currentUser = useSelector((state) => state.user.currentUser);
 
   const fetchCreator = async() =>{
-    const res = await axios.get(`users/find/${userId}`)
+    const res = await axios.get(`/users/find/${userId}`)
     console.log(res.data)
     setcreator(res.data)
   }
@@ -66,7 +68,7 @@ export const RecipeCard = ({recipeData, isMine, isFavorites}) => {
               {/* crator's avatar, name and post time */}
               <div className="creatorTime">
                 {/* creators Avatar */}
-                <Link to={`/profile/find/${userId}`} style={{textDecoration: 'none', color: '#000'}}>
+                <Link to={userId == currentUser._id? '/profile' : `/profile/find/${userId}`} style={{textDecoration: 'none', color: '#000'}}>
                   <Avatar
                     sx={{ bgcolor: '#EB5757', width: '30px', height: '30px', cursor: 'pointer'}}
                     alt="Remy Sharp"
@@ -77,7 +79,7 @@ export const RecipeCard = ({recipeData, isMine, isFavorites}) => {
                 </Link>
 
                 {/* creators name */}
-                <Link to={`/profile/find/${userId}`} style={{textDecoration: 'none', color: '#000'}}>
+                <Link to={userId == currentUser._id? '/profile' : `/profile/find/${userId}`} style={{textDecoration: 'none', color: '#000'}}>
 
                 <h8>{Creator?.firstName} {Creator?.lastName} </h8>
                 </Link>

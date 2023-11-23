@@ -10,6 +10,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import { IconButton } from '@mui/material';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 export const Profile = ({isMine}) => {
     console.log("rerendered")
     const user = useSelector((state) => state.user);
@@ -22,6 +23,9 @@ export const Profile = ({isMine}) => {
     const [profileDetails, setProfileDetails] = useState(currentUser)
     const {followers, following, firstName, lastName, handle, description} = profileDetails;
     const [descriptionedit, setDescriptionedit] = useState(description);
+    const [recpies, setRecipes] = useState();
+    const [favorites, setFavorites] = useState();
+    const [loading, setLoading] = useState(false);
     const handleDescriptionUpdate = (e) =>{
         e.preventDefault();
         dispatch(updateDescription ({description}));
@@ -35,17 +39,63 @@ export const Profile = ({isMine}) => {
                 const res = await axios.get(`/users/find/${userID}`);
                 setProfileDetails(res.data);
             } catch (error) {
-                alert(error);
-                setProfileDetails(currentUser);
-
+                console.log(error);
+                
             }
-            
+        }else{
+            setProfileDetails(currentUser);
+        }
+    }
+
+    const fetchRecipes = async()=>{
+        if(isMine)
+        {
+            try {
+                setLoading(true)
+                const res = await axios.get('recipes');
+                setRecipes(res.data);
+                setLoading(false)
+            } catch (error) {
+                console.log(error)
+                setLoading(false)
+            }
+        }else{
+            try {
+                setLoading(true)
+                const res = await axios.get(`/recipes/findByUser/${userID}`);
+                setRecipes(res.data);
+                setLoading(false)
+            } catch (error) {
+                console.log(error)
+                setLoading(false)
+            }
+        }
+    }
+
+    const fetchFavorites = async() =>{
+        if(isMine)
+        {
+            try {
+                let tempFavorites = [];
+                const favIds = currentUser.favorites;
+                console.log(favIds)
+                for(let i = 0; i < favIds.length; i++)
+                {
+                    const res = await axios.get(`/recipes/find/${favIds[i]}`);
+                    tempFavorites.push(res.data);
+                }
+                console.log(tempFavorites)
+                setFavorites(tempFavorites);
+            } catch (error) {
+                console.log(error)
+            }
         }
     }
 
     useEffect(()=>{
-
         fetchUser();
+        fetchRecipes();
+        fetchFavorites();
     }, [isMine])
     
 
@@ -66,9 +116,7 @@ export const Profile = ({isMine}) => {
             >
                 {firstName.charAt(0)} 
             </Avatar>
-                <IconButton className="cameraIcon">
-                    <AddAPhotoIcon/> 
-                </IconButton>
+                
             </div>
 
             <div className="profiledetails">
@@ -113,17 +161,22 @@ export const Profile = ({isMine}) => {
                 <div className="postsContainer">
                     {selected === 'posts'? 
                     
-                    <RecipePosts isMine={true}/>
+                    <RecipePosts isMine={true} recipePostData={recpies} fetchLoading={loading}/>
 
                     :
 
-                    <RecipePosts isMine={false}/>
+                    <RecipePosts isMine={false} recipePostData={favorites}/>
                 
                     }
                 </div>
                 </div>
             </div>
 
+            {isMine &&
+                <div className="addButton">
+                <AddOutlinedIcon style={{fontSize: '2.5rem', backgroundColor: '#EB5757', color: '#fff', borderRadius: '50%', padding: '0.3rem'}} />
+                </div>
+            }
         </div>
     </div>
   )

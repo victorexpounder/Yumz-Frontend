@@ -7,6 +7,7 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { Skeleton } from '@mui/material';
 import notFound from '../../Assets/notFound.svg'
+import create from '../../Assets/create.svg'
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
@@ -15,11 +16,24 @@ export const RecipePosts = ({isFavorites, isMine, recipePostData, fetchLoading})
     
   return (
     <div className='recipePostsContainer'>
-      {!recipePostData && !fetchLoading &&
-          <div style={{width: '100%', height: '100%',display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+      {(!recipePostData || recipePostData?.length == 0) && !fetchLoading &&
+          <div style={{
+            width: '100%',
+            height: '100%',
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: 'center', 
+            justifyContent: 'center'}}
+          >
           <div>
-          <img src={notFound} alt="" />
-          <h1 style={{fontFamily: 'Poppins'}}>No Recipes Found</h1>
+          <img src={(recipePostData?.length == 0) && isMine ? create : notFound} alt="" />
+          <h1 style={{fontFamily: 'Poppins', textAlign: 'center'}}>
+            {(recipePostData?.length == 0) && isMine ?
+             "Create Your First Recipe"
+             :
+             "No Recipes Found"
+            }
+            </h1>
           </div>
           </div>
       }

@@ -42,13 +42,13 @@ function App(){
                     <Route path="login" element={ <RequireNoAuth> <Login></Login> </RequireNoAuth> } />
                     <Route path="signUp" element={<RequireNoAuth> <SignUp></SignUp> </RequireNoAuth> } />
                     <Route path="feed" element={<RequireAuth> <DashBoard/> </RequireAuth> } />
-                    <Route path="favorites" element={<Favorites/>} />
-                    <Route path="recipeSingle" element={<SingleRecipe/>} />
+                    <Route path="favorites" element={<RequireAuth> <Favorites/> </RequireAuth> } />
+                    <Route path="recipeSingle" element={ <RequireAuth> <SingleRecipe/> </RequireAuth> } />
                     <Route path="profile">
-                        <Route index element={<Profile isMine={true}/>} />
-                        <Route path="find/:userID" element={<Profile isMine={false}/>} />
+                        <Route index element={<RequireAuth> <Profile isMine={true}/> </RequireAuth> } />
+                        <Route path="find/:userID" element={<RequireAuth><Profile isMine={false}/></RequireAuth> } />
                     </Route>
-                    <Route path="meal-planning" element={<MealPlanning/>} />
+                    <Route path="meal-planning" element={<RequireAuth><MealPlanning/></RequireAuth> } />
                 </Route>
                 </Routes>
             </BrowserRouter>
