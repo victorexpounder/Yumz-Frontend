@@ -1,5 +1,9 @@
 {
-    "routes": [
-      { "src": "/:catchall*", "dest": "https://yumz-api.onrender.com/api/:catchall*" }
-    ]
-  }
+  "routes": [
+    {
+      "src": "/:catchall*",
+      "dest": "https://yumz-api.onrender.com/api/:catchall*",
+      "methods": ["GET", "POST"] // Specify the allowed methods
+    }
+  ]
+}
