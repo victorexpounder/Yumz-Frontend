@@ -1,0 +1,5 @@
+{
+    "routes": [
+      { "src": "/:catchall*", "dest": "https://yumz-api.onrender.com/api/" }
+    ]
+  }
