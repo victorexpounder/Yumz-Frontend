@@ -1,9 +1,8 @@
 {
-  "routes": [
+  "rewrites": [
     {
-      "src": "/:catchall*",
-      "dest": "https://yumz-api.onrender.com/api/:catchall*",
-      "methods": ["GET", "POST", "PUT", "DELETE"]
-    }
+      "source": "/:path*",
+      "destination": "https://yumz-api.onrender.com/api/:path*"
+    },
   ]
 }
