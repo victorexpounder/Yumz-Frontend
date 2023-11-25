@@ -28,7 +28,7 @@ export const Login = () => {
     {
       try {
         dispatch(loginLoading());
-        const res = await axios.post('auth/signin', {
+        const res = await axios.post('/auth/signin', {
           email, password
         })
         dispatch(loginSuccess(res.data));
