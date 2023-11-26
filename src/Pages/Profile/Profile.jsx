@@ -53,7 +53,7 @@ export const Profile = ({isMine}) => {
         {
             try {
                 setLoading(true)
-                const res = await axios.get(`/api/recipes/`);
+                const res = await axios.get(`/api/recipes`);
                 setRecipes(res.data);
                 setLoading(false)
             } catch (error) {
