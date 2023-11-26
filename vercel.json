@@ -1,8 +1,5 @@
 {
   "rewrites": [
-    {
-      "source": "/:path*",
-      "destination": "https://yumz-api.onrender.com/api/:path*"
-    }
+    { "source": "/api/:path*", "destination": "https://yumz-api.onrender.com/api/:path*" }
   ]
 }

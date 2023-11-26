@@ -6,6 +6,7 @@ import { Alert, CircularProgress, Snackbar } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { loginSuccess } from '../../Redux/userSlice';
+import { port } from '../../port';
 
 export const SignUp = () => {
   const [firstName, setFirstName] = useState();
@@ -27,7 +28,7 @@ export const SignUp = () => {
       {
         try {
           setSignUpLoading(true)
-          const res = await axios.post('auth/signup', {
+          const res = await axios.post(`/api/auth/signup`, {
             firstName, lastName, email, password, handle : email
           });
           setSignUpSuccess(res.data);

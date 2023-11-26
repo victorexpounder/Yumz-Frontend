@@ -11,6 +11,7 @@ import { useParams } from 'react-router-dom';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import { IconButton } from '@mui/material';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import { port } from '../../port';
 export const Profile = ({isMine}) => {
     console.log("rerendered")
     const user = useSelector((state) => state.user);
@@ -36,7 +37,7 @@ export const Profile = ({isMine}) => {
         if(!isMine)
         {
             try {
-                const res = await axios.get(`users/find/${userID}`);
+                const res = await axios.get(`/api/users/find/${userID}`);
                 setProfileDetails(res.data);
             } catch (error) {
                 console.log(error);
@@ -52,7 +53,7 @@ export const Profile = ({isMine}) => {
         {
             try {
                 setLoading(true)
-                const res = await axios.get('recipes');
+                const res = await axios.get(`/api/recipes/`);
                 setRecipes(res.data);
                 setLoading(false)
             } catch (error) {
@@ -62,7 +63,7 @@ export const Profile = ({isMine}) => {
         }else{
             try {
                 setLoading(true)
-                const res = await axios.get(`recipes/findByUser/${userID}`);
+                const res = await axios.get(`/api/recipes/findByUser/${userID}`);
                 setRecipes(res.data);
                 setLoading(false)
             } catch (error) {
@@ -81,7 +82,7 @@ export const Profile = ({isMine}) => {
                 console.log(favIds)
                 for(let i = 0; i < favIds.length; i++)
                 {
-                    const res = await axios.get(`recipes/find/${favIds[i]}`);
+                    const res = await axios.get(`/api/recipes/find/${favIds[i]}`);
                     tempFavorites.push(res.data);
                 }
                 console.log(tempFavorites)

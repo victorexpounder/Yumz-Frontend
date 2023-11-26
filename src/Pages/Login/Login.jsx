@@ -14,6 +14,7 @@ import { loginFailure, loginLoading, loginSuccess } from '../../Redux/userSlice'
 import { Navigate, useNavigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Alert, Snackbar } from '@mui/material';
+import { port } from '../../port';
 export const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState();
@@ -28,7 +29,7 @@ export const Login = () => {
     {
       try {
         dispatch(loginLoading());
-        const res = await axios.post('auth/signin', {
+        const res = await axios.post(`/api/auth/signin`, {
           email, password
         })
         dispatch(loginSuccess(res.data));

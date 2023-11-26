@@ -8,6 +8,7 @@ import { RecipePosts } from '../../Components/RecipePosts/RecipePosts'
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import axios from 'axios'
 import { Alert, Snackbar } from '@mui/material'
+import { port } from '../../port'
 export const DashBoard = () => {
 
   const [isSticky, setIsSticky] = useState(false);
@@ -40,7 +41,7 @@ export const DashBoard = () => {
     const fetchData = async() =>{
       try{
         setrecipeFetchLoading(true);
-        const res = await axios.get('recipes/random')
+        const res = await axios.get(`/api/recipes/random`)
         console.log(res.data)
         setRecipePostData(res.data)
         setrecipeFetchLoading(false);

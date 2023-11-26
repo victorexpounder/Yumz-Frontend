@@ -10,6 +10,7 @@ import Avatar from '@mui/material/Avatar';
 import axios from 'axios';
 import {format} from 'timeago.js'
 import { useSelector } from 'react-redux';
+import { port } from '../../port';
 export const RecipeCard = ({recipeData, isMine, isFavorites}) => {
 
   const {title,imgUrl,likes, userId, createdAt} = recipeData;
@@ -19,7 +20,7 @@ export const RecipeCard = ({recipeData, isMine, isFavorites}) => {
   const currentUser = useSelector((state) => state.user.currentUser);
 
   const fetchCreator = async() =>{
-    const res = await axios.get(`/users/find/${userId}`)
+    const res = await axios.get(`/api/users/find/${userId}`)
     console.log(res.data)
     setcreator(res.data)
   }

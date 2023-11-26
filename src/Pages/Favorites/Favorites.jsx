@@ -5,6 +5,7 @@ import { SearchBar } from '../../Components/SearchBar/SearchBar'
 import { RecipePosts } from '../../Components/RecipePosts/RecipePosts'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
+import { port } from '../../port'
 export const Favorites = () => {
 
   const [isSticky, setIsSticky] = useState(false);
@@ -39,7 +40,7 @@ export const Favorites = () => {
             console.log(favIds)
             for(let i = 0; i < favIds.length; i++)
             {
-                const res = await axios.get(`recipes/find/${favIds[i]}`);
+                const res = await axios.get(`${port}/recipes/find/${favIds[i]}`);
                 tempFavorites.push(res.data);
             }
             console.log(tempFavorites)
