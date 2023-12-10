@@ -40,7 +40,7 @@ export const Favorites = () => {
             console.log(favIds)
             for(let i = 0; i < favIds.length; i++)
             {
-                const res = await axios.get(`${port}/recipes/find/${favIds[i]}`);
+                const res = await axios.get(`/api/recipes/find/${favIds[i]}`);
                 tempFavorites.push(res.data);
             }
             console.log(tempFavorites)

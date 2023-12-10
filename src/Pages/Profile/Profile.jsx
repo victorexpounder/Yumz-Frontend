@@ -9,9 +9,12 @@ import { addHello, update, updateDescription } from '../../Redux/userSlice';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
-import { IconButton } from '@mui/material';
+import { Dialog, IconButton, TextField } from '@mui/material';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import { port } from '../../port';
+import CancelIcon from '@mui/icons-material/Cancel';
+import VideocamOutlinedIcon from '@mui/icons-material/VideocamOutlined';
+import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 export const Profile = ({isMine}) => {
     console.log("rerendered")
     const user = useSelector((state) => state.user);
@@ -27,6 +30,8 @@ export const Profile = ({isMine}) => {
     const [recpies, setRecipes] = useState();
     const [favorites, setFavorites] = useState();
     const [loading, setLoading] = useState(false);
+    const [addPostOpen, setAddPostOpen] = useState(false);
+
     const handleDescriptionUpdate = (e) =>{
         e.preventDefault();
         dispatch(updateDescription ({description}));
@@ -99,12 +104,15 @@ export const Profile = ({isMine}) => {
         fetchFavorites();
     }, [isMine])
     
+    const handleSetAddPostOpen = (value) => {
+        setAddPostOpen(value);
+      };
 
   return (
     <div>
         {/* navbar */}
         <div className="profileNavbar">
-        <AppNavBar/>
+        <AppNavBar addPostOpen={addPostOpen} setAddPostOpen={handleSetAddPostOpen}/>
         </div>
 
         <div className="profileContent">
@@ -122,7 +130,7 @@ export const Profile = ({isMine}) => {
 
             <div className="profiledetails">
                 <div className="profiledetailsinner">
-                    <div className="name"> {user.firstName} {lastName} </div>
+                    <div className="name"> {firstName} {lastName} </div>
                     <p className='handle'>@{handle}</p>
                     {!isMine &&
                     <div className="actionButtons">
@@ -174,11 +182,13 @@ export const Profile = ({isMine}) => {
             </div>
 
             {isMine &&
-                <div className="addButton">
+                <div className="addButton" onClick={()=> setAddPostOpen(true)}>
                 <AddOutlinedIcon style={{fontSize: '2.5rem', backgroundColor: '#EB5757', color: '#fff', borderRadius: '50%', padding: '0.3rem'}} />
                 </div>
             }
         </div>
+
+        
     </div>
   )
 }

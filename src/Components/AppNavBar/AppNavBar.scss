@@ -53,6 +53,151 @@
 
     
 }
+
+.dialogCon{
+    border-radius: 50px;
+    width: 500px;
+    
+    .dtitle{
+        box-sizing: border-box;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        font-family: "Poppins";
+        font-size: 0.8rem;
+        border-bottom: 1px solid rgba(204, 204, 204, 0.952);
+        position: relative;
+        .icon{
+            position: absolute;
+            right: 1rem;
+            
+        }
+    }
+    .dContent{
+        padding: 0.5rem 1rem;
+        position: relative;
+        
+        .user{
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            justify-content: center;
+            font-family: "Poppins";
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 10px 0;
+            
+        }
+        .recipeText{
+            max-height: 300px;
+            overflow: scroll;
+            @media (max-height: 700px) {
+                max-height: 200px;
+            }
+            textarea{
+                width: 100%;
+                
+                font-family: "Poppins";
+                font-size: 1.4rem;
+                border: none;
+                outline: none;
+                margin: 1rem 0;
+                
+            }
+            .imgCon{
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                position: relative;
+                
+                .remove{
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                }
+            }
+            .vidCon{
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                position: relative;
+                
+                .remove{
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                }
+            }
+        }
+
+        .addToPost{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid rgba(157, 129, 129, 0.952);
+            border-radius: 8px;
+            padding: 8px;
+            font-family: "Poppins";
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin: 1rem 0;
+            box-shadow: 2px #424242;
+            
+        }
+
+        .post{
+            padding: 0.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            align-self: flex-end;
+            font-family: "Poppins";
+            font-size: 1rem;
+            font-weight: 600;
+            background-color: rgba(204, 204, 204, 0.519);
+            color: rgb(204, 204, 204);
+            border-radius: 10px;
+            margin: 2rem 0 0.5rem 0;
+            transition: 0.3s;
+            cursor: pointer;
+            
+            &.active{
+                background-color: #EB5757;
+                color: #fff;
+                &:hover{
+                    background-color: #d14e4e;
+
+                }
+            }
+        }
+    }
+
+    @media (max-width: 700px) {
+        width: 300px;
+        .dtitle{
+            font-size: 0.5rem;
+        }
+        .dContent{
+            .user{
+                flex-direction: column;
+                .name{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                }
+            }
+            .recipeText{
+                textarea{
+                    font-size: 1.1rem;
+                }
+            }
+        }
+    }
+}
+
 .drawApp{
     background: transparent;
 

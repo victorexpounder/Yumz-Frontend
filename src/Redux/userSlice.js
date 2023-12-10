@@ -1,6 +1,5 @@
 import { combineReducers, createSlice} from '@reduxjs/toolkit'
 
-
     const initialState =  {
         currentUser : null,
         loading : false,
@@ -37,6 +36,20 @@ export const userSlice =  createSlice({
             return initialState;
         },
 
+        favorite : (state, action) =>{
+            if(state.currentUser.favorites.includes(action.payload))
+            {
+                state.currentUser.favorites.splice(
+                    state.currentUser.favorites.findIndex(
+                        (recipeId) => recipeId === action.payload
+                    ),
+                    1
+                )
+            }else{
+                state.currentUser.favorites.push(action.payload)
+            }
+        },
+
         update : (state, action) =>{
             state.firstName = action.payload.firstName
             state.lastName = action.payload.lastName
@@ -51,5 +64,5 @@ export const userSlice =  createSlice({
     }
 })
 
-export const {update, updateDescription, loginLoading, loginSuccess, loginFailure, logout} = userSlice.actions;
+export const {update, updateDescription, loginLoading, loginSuccess, loginFailure, logout, favorite} = userSlice.actions;
 export default userSlice.reducer;

@@ -48,7 +48,7 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://yumz-api.onrender.com/",
+  "proxy": "http://localhost:8800/",
   "devDependencies": {
     "env-cmd": "^10.1.0"
   }

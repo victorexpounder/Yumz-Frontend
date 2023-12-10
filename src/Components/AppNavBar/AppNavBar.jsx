@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './AppNavBar.scss'
 import Avatar from '@mui/material/Avatar';
 import { styled } from '@mui/material/styles';
@@ -18,14 +18,72 @@ import Tooltip from '@mui/material/Tooltip';
 import { SearchBar } from '../SearchBar/SearchBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../Redux/userSlice';
-export const AppNavBar = () => {
-    const user = useSelector((state) => state.user);
+import { Dialog, DialogContent, DialogTitle, TextField } from '@mui/material';
+import CancelIcon from '@mui/icons-material/Cancel';
+import VideocamOutlinedIcon from '@mui/icons-material/VideocamOutlined';
+import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
+
+export const AppNavBar = ({addPostOpen, setAddPostOpen}) => {
+    const user = useSelector((state) => state.user.currentUser);
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [isSticky, setIsSticky] = useState(false);
+    const currentUser = useSelector((state) => state.user.currentUser);
+    const {firstName, lastName, handle} = currentUser;
+    const [title, setTitle] = useState();
+    const [recipeDetails, setRecipeDetails] = useState();
+    const videoInputRef = useRef(null)
+    const imageInputRef = useRef(null)
+    const textareaRef = useRef(null);
+    const [selectedVideo, setSelectedVideo] = useState(null);
+    const [selectedImage, setSelectedImage] = useState(null);
     const dispatch = useDispatch();
+
     const handleDrawerToggle = () => {
         setDrawerOpen(!drawerOpen);
-      };
+    };
+
+    const handleVideoClick = () => {
+      // Trigger the file input programmatically
+      if (videoInputRef.current) {
+        videoInputRef.current.click();
+      }
+    };
+    const handleImageClick = () => {
+      // Trigger the file input programmatically
+      if (imageInputRef.current) {
+        imageInputRef.current.click();
+      }
+    };
+    const handleVideoChange = (event) => {
+      const file = event.target.files[0];
+  
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setSelectedVideo(reader.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+    const handleImageChange = (event) => {
+      const file = event.target.files[0];
+  
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setSelectedImage(reader.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+
+    const handleTextareaChange = () => {
+      if (textareaRef.current) {
+        // Set the height of the textarea based on its scrollHeight
+        textareaRef.current.style.height = 'auto';
+        textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+      }
+    };
 
     // styled active badge
     const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -71,6 +129,8 @@ export const AppNavBar = () => {
     }
   };
 
+  
+
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => {
@@ -103,8 +163,8 @@ export const AppNavBar = () => {
             <div className="avatarCon">
               <div className="addbutton">
 
-                <Tooltip title="create">
-                  <IconButton>
+                <Tooltip title="Create A Recipe">
+                  <IconButton onClick={()=> setAddPostOpen(true)}>
                     <AddBoxIcon style={{color: 'EB5757', fontSize: '2rem'}}/>
                   </IconButton>
                 </Tooltip>
@@ -153,7 +213,7 @@ export const AppNavBar = () => {
                             alt="Remy Sharp"
                             src={girl1}
                             >
-                            B
+                            {user.firstName}
                             </Avatar>
                         </StyledBadge>
 
@@ -206,6 +266,117 @@ export const AppNavBar = () => {
                 
               
             </SwipeableDrawer>
+
+
+            {/* add post dialog */}
+            <Dialog open={addPostOpen} onClose={()=> setAddPostOpen(false)} className='dialog' style={{borderRadius: '50%'}}>
+                <div  className='dialogCon'>
+                  <div className="dtitle">
+                    <h1>
+                      Create Your Recipe
+                    </h1>
+                    <IconButton className='icon' onClick={()=> setAddPostOpen(false)}>
+                      <CancelIcon fontSize='large' />
+                    </IconButton>
+                  </div>
+
+                  <div className="dContent">
+                    <div className="user">
+                      <Avatar
+                        sx={{ bgcolor: '#EB5757', height : '40px', width: '40px', fontSize: "20px"}}
+                        alt={firstName}
+                        src={girl1}
+                      >
+                            {firstName.charAt(0)} 
+                      </Avatar>
+                      <div className="name">
+                      <p>{firstName} {lastName}</p>
+                      <p> {handle} </p>
+                      </div>
+                      <TextField 
+                      id="outlined-basic" 
+                      label="Title" 
+                      variant="standard" 
+                      fullWidth 
+                      type='text'
+                      onChange={(e)=> setTitle(e.target.value)}
+                      value={title}
+                      />
+                    </div>
+
+                    <div className="recipeText">
+                      <textarea
+                      ref={textareaRef}
+                      type="text"
+                      placeholder='Write Down Your Recipe' 
+                      style={{ resize: 'none' }}
+                      onChange={(e)=>{setRecipeDetails(e.target.value); handleTextareaChange()}}
+                      value={recipeDetails}
+                      />
+                      {/* vide input  */}
+                      <input
+                      type="file"
+                      accept="video/*"
+                      ref={videoInputRef}
+                      style={{ display: 'none' }} // Hide the default input file UI
+                      onChange={handleVideoChange}
+                      />
+                      {/* image input  */}
+                      <input
+                      type="file"
+                      accept="image/*"
+                      ref={imageInputRef}
+                      style={{ display: 'none' }} // Hide the default input file UI
+                      onChange={handleImageChange}
+                      />
+
+                      {selectedImage &&
+                        <div className="imgCon">
+                        <img 
+                        src={selectedImage} 
+                        alt="Selected" 
+                        style={{ maxWidth: '100%', maxHeight: '300px' }} 
+                        />
+                        <IconButton className='remove' onClick={()=> setSelectedImage(null)}>
+                          <CancelIcon/>
+                        </IconButton>
+                        </div>
+
+                      }
+                      {selectedVideo &&
+                        <div className="vidCon">
+                          <video controls width="300" height="200">
+                          <source src={selectedVideo} type="video/mp4" />
+                          Your browser does not support the video tag.
+                          </video>
+
+                          <IconButton className='remove' onClick={()=> setSelectedVideo(null)}>
+                          <CancelIcon/>
+                          </IconButton>
+                        </div>
+                      }
+                    </div>
+
+                    <div className="addToPost">
+                      <p>Add To Recipe</p>
+                      <div className="tools">
+                        <IconButton onClick={handleVideoClick}>
+                          <VideocamOutlinedIcon color='secondary'/>
+                        </IconButton>
+
+                        <IconButton onClick={handleImageClick}>
+                          <PhotoLibraryIcon color='primary' />
+                        </IconButton>
+                      </div>
+                    </div>
+
+                    <div className={`post ${title && recipeDetails? "active" : "" }`}>
+                      Post
+                    </div>
+                  </div>
+
+                </div>
+            </Dialog>
     </div>
   )
 }

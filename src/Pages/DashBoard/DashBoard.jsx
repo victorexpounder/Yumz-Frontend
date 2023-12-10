@@ -7,8 +7,14 @@ import { SearchBar } from '../../Components/SearchBar/SearchBar'
 import { RecipePosts } from '../../Components/RecipePosts/RecipePosts'
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import axios from 'axios'
-import { Alert, Snackbar } from '@mui/material'
+import { Alert, Avatar, Dialog, IconButton, Snackbar, TextField } from '@mui/material'
 import { port } from '../../port'
+import CancelIcon from '@mui/icons-material/Cancel';
+import VideocamOutlinedIcon from '@mui/icons-material/VideocamOutlined';
+import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
+import { useSelector } from 'react-redux'
+import girl1 from '../../Assets/girl1.png'
+import { AddButton } from '../../Components/AddButton/AddButton'
 export const DashBoard = () => {
 
   const [isSticky, setIsSticky] = useState(false);
@@ -16,7 +22,10 @@ export const DashBoard = () => {
   const [recipeFetchSuccess, setrecipeFetchSuccess] = useState(false);
   const [recipeFetchfailure, setrecipeFetchfailure] = useState(false);
   const [recipeFetchLoading, setrecipeFetchLoading] = useState(false);
-
+  const currentUser = useSelector((state) => state.user.currentUser);
+  const {firstName, lastName, handle} = currentUser;
+  const [addPostOpen, setAddPostOpen] = useState(false);
+  
   const handleScroll = () => {
     const scrollTop = window.scrollY;
     // Adjust this value based on your requirements
@@ -28,6 +37,10 @@ export const DashBoard = () => {
     } else {
       setIsSticky(false);
     }
+  };
+
+  const handleSetAddPostOpen = (value) => {
+    setAddPostOpen(value);
   };
 
   useEffect(() => {
@@ -60,7 +73,7 @@ export const DashBoard = () => {
   return (
     <div>
       {/* navBar */}
-      <AppNavBar/>
+      <AppNavBar addPostOpen={addPostOpen} setAddPostOpen={handleSetAddPostOpen}/>
 
       {/* other app content */}
       <div className="contentApp">
@@ -77,7 +90,7 @@ export const DashBoard = () => {
         {/* Recipe Posts */}
         <RecipePosts recipePostData={recipePostData} Fetchfailure={recipeFetchfailure} FetchSuccess={recipeFetchSuccess} fetchLoading={recipeFetchLoading}/>
 
-        <div className="addButton">
+        <div className="addButton" onClick={()=>{setAddPostOpen(true)}}>
             <AddOutlinedIcon style={{fontSize: '2.5rem', backgroundColor: '#EB5757', color: '#fff', borderRadius: '50%', padding: '0.3rem'}} />
         </div>
       </div>
@@ -93,6 +106,9 @@ export const DashBoard = () => {
           Recipes failed to load, please refresh
         </Alert>
       </Snackbar>
+
+
+      
     </div>
   )
 }

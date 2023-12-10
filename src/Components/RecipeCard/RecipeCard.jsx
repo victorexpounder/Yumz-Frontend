@@ -9,25 +9,54 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Avatar from '@mui/material/Avatar';
 import axios from 'axios';
 import {format} from 'timeago.js'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { port } from '../../port';
+import { favorite } from '../../Redux/userSlice';
 export const RecipeCard = ({recipeData, isMine, isFavorites}) => {
 
-  const {title,imgUrl,likes, userId, createdAt} = recipeData;
+  const {title,imgUrl,likes, userId, createdAt, _id} = recipeData;
   const [liked, setLiked] = useState(false);
   const [favorited, setFavorited] = useState(false);
   const [Creator, setcreator] = useState()
   const currentUser = useSelector((state) => state.user.currentUser);
-
+  const {favorites} = currentUser;
+  const dispatch = useDispatch();
+  
   const fetchCreator = async() =>{
     const res = await axios.get(`/api/users/find/${userId}`)
     console.log(res.data)
     setcreator(res.data)
   }
 
+  const checkFavorite = () =>{ 
+    favorites.map((favorite)=>{
+      if(favorite == _id)
+      {
+        setFavorited(true);
+      }
+    })
+  }
+
+  const addToFavorites = async() =>{
+    try {
+      if(currentUser.favorites.includes(_id))
+      {
+        const res = await axios.put(`/api/users/unfavorite/${_id}`)
+        console.log(res.data);
+      }else{
+        const res = await axios.put(`/api/users/favorite/${_id}`)
+        console.log(res.data)
+      }
+      dispatch(favorite(_id))
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
   
   useEffect(()=>{
     fetchCreator();
+    checkFavorite();
   }, [recipeData])
 
   return (
@@ -41,9 +70,9 @@ export const RecipeCard = ({recipeData, isMine, isFavorites}) => {
               {!isMine?
               
               <div className="favButton">
-                {favorited?   <FavoriteIcon onClick={()=> setFavorited(!favorited)} className='clickedColor'/>
+                {currentUser.favorites.includes(_id)?   <FavoriteIcon onClick={addToFavorites} className='clickedColor'/>
                 :
-                  <FavoriteBorderIcon onClick={()=> setFavorited(!favorited)}/>
+                  <FavoriteBorderIcon onClick={addToFavorites}/>
                 }
               </div>
 
@@ -69,7 +98,7 @@ export const RecipeCard = ({recipeData, isMine, isFavorites}) => {
               {/* crator's avatar, name and post time */}
               <div className="creatorTime">
                 {/* creators Avatar */}
-                <Link to={userId == currentUser._id? '/profile' : `/profile/find/${userId}`} style={{textDecoration: 'none', color: '#000'}}>
+                <Link to={userId === currentUser._id? '/profile' : `/profile/find/${userId}`} style={{textDecoration: 'none', color: '#000'}}>
                   <Avatar
                     sx={{ bgcolor: '#EB5757', width: '30px', height: '30px', cursor: 'pointer'}}
                     alt="Remy Sharp"
