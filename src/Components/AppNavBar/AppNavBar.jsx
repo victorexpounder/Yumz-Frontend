@@ -23,7 +23,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import VideocamOutlinedIcon from '@mui/icons-material/VideocamOutlined';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import { storage } from '../../firebaseConfig';
-import {  getDownloadURL, ref, uploadBytes } from "@firebase/storage";
+import {  getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import axios from 'axios';
 
 
@@ -33,7 +33,7 @@ export const AppNavBar = ({addPostOpen, setAddPostOpen, handleSearchInputChange,
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [isSticky, setIsSticky] = useState(false);
     const currentUser = useSelector((state) => state.user.currentUser);
-    const {firstName, lastName, handle} = currentUser;
+    const {firstName, lastName, handle, img} = currentUser;
     const [title, setTitle] = useState();
     const [recipeDetails, setRecipeDetails] = useState();
     const videoInputRef = useRef(null)
@@ -243,9 +243,9 @@ export const AppNavBar = ({addPostOpen, setAddPostOpen, handleSearchInputChange,
                     <Avatar
                     sx={{ bgcolor: '#EB5757' }}
                     alt="Remy Sharp"
-                    src={girl1}
+                    src={img}
                     >
-                    B
+                    {firstName.charAt(0)}
                     </Avatar>
                 </StyledBadge>
               </Link>
@@ -276,7 +276,7 @@ export const AppNavBar = ({addPostOpen, setAddPostOpen, handleSearchInputChange,
                             <Avatar
                             sx={{ bgcolor: '#EB5757', width: '48px', height: '48px'}}
                             alt="Remy Sharp"
-                            src={girl1}
+                            src={img}
                             >
                             {user.firstName}
                             </Avatar>
@@ -350,7 +350,7 @@ export const AppNavBar = ({addPostOpen, setAddPostOpen, handleSearchInputChange,
                       <Avatar
                         sx={{ bgcolor: '#EB5757', height : '40px', width: '40px', fontSize: "20px"}}
                         alt={firstName}
-                        src={girl1}
+                        src={img}
                       >
                             {firstName.charAt(0)} 
                       </Avatar>

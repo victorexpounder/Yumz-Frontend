@@ -5,16 +5,18 @@ import girl1 from '../../Assets/girl1.png'
 import './Profile.scss'
 import { RecipePosts } from '../../Components/RecipePosts/RecipePosts';
 import { useDispatch, useSelector } from 'react-redux';
-import { addHello, follow, update, updateDescription, updateHandle } from '../../Redux/userSlice';
+import { addHello, follow, update, updateAvatar, updateCover, updateDescription, updateHandle } from '../../Redux/userSlice';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
-import { Dialog, IconButton, TextField } from '@mui/material';
+import { Alert, Dialog, IconButton, Snackbar, TextField } from '@mui/material';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import { port } from '../../port';
 import CancelIcon from '@mui/icons-material/Cancel';
 import VideocamOutlinedIcon from '@mui/icons-material/VideocamOutlined';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { storage } from '../../firebaseConfig';
 export const Profile = ({isMine}) => {
     console.log("rerendered")
     const user = useSelector((state) => state.user);
@@ -26,13 +28,15 @@ export const Profile = ({isMine}) => {
     const { userID } = useParams();
     const currentUser = useSelector((state) => state.user.currentUser);
     const [profileDetails, setProfileDetails] = useState(currentUser)
-    const {followers, following, firstName, lastName, handle, description, _id,} = profileDetails;
+    const {followers, following, firstName, lastName, handle, description, _id, img, coverImg} = profileDetails;
     const [descriptionedit, setDescriptionedit] = useState(description);
     const [handleEdit, setHandleEdit] = useState(handle);
     const [recpies, setRecipes] = useState();
     const [favorites, setFavorites] = useState();
     const [loading, setLoading] = useState(false);
     const [addPostOpen, setAddPostOpen] = useState(false);
+    const [profileUploadLoading, setProfileUploadLoading] = useState(false);
+    const [profileUploadSuccess, setProfileUploadSuccess] = useState(false);
     const avatarInputRef = useRef(null)
     const coverInputRef = useRef(null)
 
@@ -162,8 +166,78 @@ export const Profile = ({isMine}) => {
         setAddPostOpen(value);
       };
 
-      const handleAvatarChange = () =>{
-        
+      const uploadFile = (file, avatar) => {
+        return new Promise((resolve, reject) => {
+          const storageRef = ref(storage, `profile/${avatar? 'avatar' : 'cover'}/${currentUser._id}`);
+          
+          const uploadTask = uploadBytes(storageRef, file);
+      
+          uploadTask.then(() => {
+            getDownloadURL(storageRef)
+              .then((downloadURL) => {
+                console.log("File uploaded successfully. Download URL:", downloadURL);
+                resolve(downloadURL);
+              })
+              .catch((error) => {
+                console.error("Error getting download URL:", error);
+                reject(error);
+              });
+          }).catch((error) => {
+            console.error("Error uploading file:", error);
+            reject(error);
+          });
+        });
+      };
+
+      const handleAvatarChange = async(event) =>{
+          const file = event.target.files[0];
+            try {
+                setProfileUploadLoading(true)
+                const [imgUrl] = await Promise.all([
+                    uploadFile(file, true)
+                ]);
+
+                if(imgUrl)
+                {
+                const res = await axios.put(`/api/users/${currentUser._id}`, {
+                    img: imgUrl
+                })
+                dispatch(updateAvatar(imgUrl))
+                setProfileUploadLoading(false);
+                setProfileUploadSuccess(true)
+                }else{
+                console.log("select an Image")
+                }
+            } catch (error) {
+                setProfileUploadLoading(false)
+                console.log(error);
+            }
+
+      }
+      const handleCoverChange = async(event) =>{
+          const file = event.target.files[0];
+            try {
+                setProfileUploadLoading(true)
+                const [imgUrl] = await Promise.all([
+                    uploadFile(file, false)
+                ]);
+
+                if(imgUrl)
+                {
+                const res = await axios.put(`/api/users/${currentUser._id}`, {
+                    coverImg: imgUrl
+                })
+                dispatch(updateCover(imgUrl))
+                setProfileUploadLoading(false);
+                setProfileUploadSuccess(true)
+                }else{
+                console.log("select an Image")
+                }
+            } catch (error) {
+                setProfileUploadLoading(false)
+                console.log(error);
+            }
+
       }
 
   return (
@@ -179,20 +253,23 @@ export const Profile = ({isMine}) => {
                 accept="image/*"
                 style={{display: 'none'}}
                 ref={avatarInputRef}
+                onChange={handleAvatarChange}
             />
             <input 
                 type="file" 
                 accept="image/*"
                 style={{display: 'none'}}
                 ref={coverInputRef}
+                onChange={handleCoverChange}
             />
             
-            <div className="profileHeader" onClick={handleCoverClick}></div>
+            <div className="profileHeader" onClick={handleCoverClick} style={{backgroundImage: `url(${coverImg})`}}> {!coverImg? "Tap to Upload Image" : ""} </div>
 
             <div className="profileAvatarCon" onClick={handleAvatarClick}>
             <Avatar
             sx={{ bgcolor: '#EB5757', height : '110px', width: '110px', fontSize: "48px"}}
             alt={firstName}
+            src={img}
             >
                 {firstName.charAt(0)} 
             </Avatar>
@@ -264,6 +341,17 @@ export const Profile = ({isMine}) => {
             }
         </div>
 
+       <Snackbar open={profileUploadLoading}  onClose={()=> setProfileUploadLoading(false)}>
+        <Alert onClose={()=> setProfileUploadLoading(false)} severity="warning" sx={{ width: '100%' }}>
+          profile update Uploading...
+        </Alert>
+      </Snackbar>
+
+       <Snackbar open={profileUploadSuccess} autoHideDuration={6000} onClose={()=> setProfileUploadSuccess(false)}>
+        <Alert onClose={()=> setProfileUploadSuccess(false)} severity="Success" sx={{ width: '100%' }}>
+          profile updated!
+        </Alert>
+      </Snackbar>
         
     </div>
   )

@@ -110,7 +110,7 @@ export const SingleRecipe = () => {
         <div className={`SRcontent ${play? 'desktopPlay' : ''}`}>
             <div className={`cover ${play? 'resize' : ''}`}>
                 {!play?
-                  <div className="coverImg" style={{backgroundImage: `url(${recipe?.imgUrl})`}}>
+                  <div className="coverImg" style={{backgroundImage: `url(${recipe?.imgUrl || "https://images.pexels.com/photos/4194842/pexels-photo-4194842.jpeg?auto=compress&cs=tinysrgb&w=800"})`}}>
                     <IconButton onClick={()=> setPlay(true)}>
                       <PlayCircleFilledIcon fontSize='large' sx={{color: '#ffff'}}/>
                     </IconButton>

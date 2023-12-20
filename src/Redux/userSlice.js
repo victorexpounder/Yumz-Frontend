@@ -71,9 +71,15 @@ export const userSlice =  createSlice({
         updateHandle: (state, action) =>{
             state.currentUser.handle = action.payload
         },
+        updateAvatar: (state, action) =>{
+            state.currentUser.img = action.payload
+        },
+        updateCover: (state, action) =>{
+            state.currentUser.coverImg = action.payload
+        },
         
     }
 })
 
-export const {update, updateDescription, updateHandle, loginLoading, loginSuccess, loginFailure, logout, favorite, follow} = userSlice.actions;
+export const {update, updateDescription, updateHandle, loginLoading, loginSuccess, loginFailure, logout, favorite, follow, updateAvatar, updateCover} = userSlice.actions;
 export default userSlice.reducer;
