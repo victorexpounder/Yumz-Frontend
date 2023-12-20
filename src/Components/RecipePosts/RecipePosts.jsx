@@ -12,7 +12,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-export const RecipePosts = ({isFavorites, isMine, recipePostData, fetchLoading}) => {
+export const RecipePosts = ({isFavorites, isMine, recipePostData, fetchLoading, Dashboard}) => {
     
   return (
     <div className='recipePostsContainer'>
@@ -41,7 +41,7 @@ export const RecipePosts = ({isFavorites, isMine, recipePostData, fetchLoading})
         {recipePostData?
           recipePostData.map((recipe, index)=>{
             return(
-              <RecipeCard recipeData={recipe} isMine={isMine} isFavorites={isFavorites} key={recipe.id}/>
+              <RecipeCard recipeData={recipe} isMine={isMine} isFavorites={isFavorites} key={recipe.id} dashboard={Dashboard}/>
             )
           })
           :

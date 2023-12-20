@@ -25,6 +25,13 @@ export const DashBoard = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
   const {firstName, lastName, handle} = currentUser;
   const [addPostOpen, setAddPostOpen] = useState(false);
+  const [searchInput, setSearchInput] = useState('');
+
+  const handleSearchInputChange = (input) => {
+    setSearchInput(input);
+    
+  };
+
   
   const handleScroll = () => {
     const scrollTop = window.scrollY;
@@ -66,6 +73,15 @@ export const DashBoard = () => {
       }
     }
 
+    const handleSearch = async() =>{
+      try {
+          const res = await axios.get(`/api/recipes/search?q=${searchInput}`)
+          setRecipePostData(res.data)
+      } catch (error) {
+          console.log(error);
+      }
+    }
+
     
     useEffect(()=>{
       fetchData();
@@ -73,7 +89,7 @@ export const DashBoard = () => {
   return (
     <div>
       {/* navBar */}
-      <AppNavBar addPostOpen={addPostOpen} setAddPostOpen={handleSetAddPostOpen}/>
+      <AppNavBar addPostOpen={addPostOpen} setAddPostOpen={handleSetAddPostOpen} handleSearch={handleSearch} handleSearchInputChange={handleSearchInputChange}/>
 
       {/* other app content */}
       <div className="contentApp">
@@ -82,13 +98,13 @@ export const DashBoard = () => {
 
         {/* searchBar */}
         <div className={`contentSearch ${isSticky? 'sticky' : ''}`}>
-        <SearchBar />
+        <SearchBar onInputChange={handleSearchInputChange} onSearch={handleSearch}/>
         </div>
 
         <hr />
 
         {/* Recipe Posts */}
-        <RecipePosts recipePostData={recipePostData} Fetchfailure={recipeFetchfailure} FetchSuccess={recipeFetchSuccess} fetchLoading={recipeFetchLoading}/>
+        <RecipePosts recipePostData={recipePostData} Fetchfailure={recipeFetchfailure} FetchSuccess={recipeFetchSuccess} fetchLoading={recipeFetchLoading} Dashboard={true}/>
 
         <div className="addButton" onClick={()=>{setAddPostOpen(true)}}>
             <AddOutlinedIcon style={{fontSize: '2.5rem', backgroundColor: '#EB5757', color: '#fff', borderRadius: '50%', padding: '0.3rem'}} />

@@ -12,7 +12,8 @@ import {format} from 'timeago.js'
 import { useDispatch, useSelector } from 'react-redux';
 import { port } from '../../port';
 import { favorite } from '../../Redux/userSlice';
-export const RecipeCard = ({recipeData, isMine, isFavorites}) => {
+
+export const RecipeCard = ({recipeData, isMine, isFavorites, isSide, dashboard}) => {
 
   const {title,imgUrl,likes, userId, createdAt, _id} = recipeData;
   const [liked, setLiked] = useState(false);
@@ -62,12 +63,12 @@ export const RecipeCard = ({recipeData, isMine, isFavorites}) => {
   return (
     <div className="recipePost">
             {/* coverImg */}
-            <Link to={'/recipeSingle'}>
+            <Link to={`/recipeSingle/${_id}`}>
             <div className="coverImg" style={{backgroundImage: `url(${imgUrl})`}}>
             </div>
             </Link>
               {/* add to favorite button */}
-              {!isMine?
+              {!isMine && !dashboard?
               
               <div className="favButton">
                 {currentUser.favorites.includes(_id)?   <FavoriteIcon onClick={addToFavorites} className='clickedColor'/>
@@ -86,14 +87,10 @@ export const RecipeCard = ({recipeData, isMine, isFavorites}) => {
             <div className="recipeDetails">
               {/* Recipie name */}
               <div className="nameD">
-                <Link to={'/recipeSingle'} style={{textDecoration: 'none', color: '#000'}}>
+                <Link to={`/recipeSingle/${_id}`} style={{textDecoration: 'none', color: '#000'}}>
                   <h1>{title}</h1>
                 </Link>
-              {isFavorites?
-              <DeleteIcon sx={{cursor: 'pointer', color: '#EB5757'}}/>
-              :
-              ''
-              }
+              
               </div>
               {/* crator's avatar, name and post time */}
               <div className="creatorTime">
@@ -119,17 +116,20 @@ export const RecipeCard = ({recipeData, isMine, isFavorites}) => {
                 {/* time */}
                 <p>{format(createdAt)}</p>
               </div>
+              
+              {!isSide &&
+                <div className="figures">
+                  <div className="likes"> 
+                    <RecommendIcon onClick={() => setLiked(!liked)} className={liked? 'likeButton' : ''}/>
+                  <p>{likes.length}</p>
+                  </div>
+                  <div className="comments">
+                    <CommentIcon/>
+                    <p> 236 </p>
+                  </div>
+                </div>
+              }
 
-              <div className="figures">
-                <div className="likes"> 
-                  <RecommendIcon onClick={() => setLiked(!liked)} className={liked? 'likeButton' : ''}/>
-                <p>{likes.length}</p>
-                </div>
-                <div className="comments">
-                  <CommentIcon/>
-                  <p> 236 </p>
-                </div>
-              </div>
             </div>
           </div>
   )

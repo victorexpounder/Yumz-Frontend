@@ -50,19 +50,30 @@ export const userSlice =  createSlice({
             }
         },
 
-        update : (state, action) =>{
-            state.firstName = action.payload.firstName
-            state.lastName = action.payload.lastName
-            state.email = action.payload.email
-            state.handle = action.payload.handle
-            state.description = action.payload.description
+        follow: (state, action) =>{
+            if(state.currentUser.following.includes(action.payload))
+            {
+                state.currentUser.following.splice(
+                    state.currentUser.following.findIndex(
+                        (id) => id === action.payload
+                    ),
+                    1
+                )
+            }else{
+                state.currentUser.following.push(action.payload);
+            }
         },
+
         updateDescription: (state, action) =>{
-            state.description = action.payload.description
+            state.currentUser.description = action.payload
+        },
+
+        updateHandle: (state, action) =>{
+            state.currentUser.handle = action.payload
         },
         
     }
 })
 
-export const {update, updateDescription, loginLoading, loginSuccess, loginFailure, logout, favorite} = userSlice.actions;
+export const {update, updateDescription, updateHandle, loginLoading, loginSuccess, loginFailure, logout, favorite, follow} = userSlice.actions;
 export default userSlice.reducer;

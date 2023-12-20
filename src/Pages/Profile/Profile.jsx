@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { AppNavBar } from '../../Components/AppNavBar/AppNavBar'
 import Avatar from '@mui/material/Avatar';
 import girl1 from '../../Assets/girl1.png'
 import './Profile.scss'
 import { RecipePosts } from '../../Components/RecipePosts/RecipePosts';
 import { useDispatch, useSelector } from 'react-redux';
-import { addHello, update, updateDescription } from '../../Redux/userSlice';
+import { addHello, follow, update, updateDescription, updateHandle } from '../../Redux/userSlice';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
@@ -20,22 +20,61 @@ export const Profile = ({isMine}) => {
     const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const [editDescription, setEditDescription] = useState(false);
+    const [editHandle, setEditHandle] = useState(false);
     const [selected, setSelected] = useState('posts');
     const [followed, setFollowed] = useState(false);
     const { userID } = useParams();
     const currentUser = useSelector((state) => state.user.currentUser);
     const [profileDetails, setProfileDetails] = useState(currentUser)
-    const {followers, following, firstName, lastName, handle, description} = profileDetails;
+    const {followers, following, firstName, lastName, handle, description, _id,} = profileDetails;
     const [descriptionedit, setDescriptionedit] = useState(description);
+    const [handleEdit, setHandleEdit] = useState(handle);
     const [recpies, setRecipes] = useState();
     const [favorites, setFavorites] = useState();
     const [loading, setLoading] = useState(false);
     const [addPostOpen, setAddPostOpen] = useState(false);
+    const avatarInputRef = useRef(null)
+    const coverInputRef = useRef(null)
 
-    const handleDescriptionUpdate = (e) =>{
+    const handleAvatarClick = () => {
+        // Trigger the file input programmatically
+        if (avatarInputRef.current) {
+          avatarInputRef.current.click();
+        }
+    };
+    const handleCoverClick = () => {
+        // Trigger the file input programmatically
+        if (coverInputRef.current) {
+          coverInputRef.current.click();
+        }
+    };
+
+    const handleDescriptionUpdate = async(e) =>{
         e.preventDefault();
-        dispatch(updateDescription ({description}));
+        try {
+            const res = await axios.put(`/api/users/${_id}`, {
+                description : descriptionedit
+            })
+            dispatch(updateDescription (descriptionedit));
+            
+        } catch (error) {
+            console.log(error);
+        }
         setEditDescription(false);
+    }
+    const handleChangeHandle = async(e) =>{
+        e.preventDefault();
+        try {
+            const checkres = await axios.get(`/api/users/handle/${handleEdit}`)
+            const handle = checkres.data;
+            const res = await axios.put(`/api/users/${_id}`, {
+                handle : handle
+            })
+            dispatch(updateHandle(handle)); 
+        } catch (error) {
+            alert(error.response.data.message);
+        }
+        setEditHandle(false);
     }
 
     const fetchUser = async() =>{
@@ -98,6 +137,21 @@ export const Profile = ({isMine}) => {
         }
     }
 
+    const handleFollow = async() =>{
+        try {
+            if(currentUser.following.includes(userID))
+            {
+                const res = await axios.put(`/api/users/unfollow/${userID}`)
+
+            }else{
+                const res = await axios.put(`/api/users/follow/${userID}`)
+            }
+            dispatch(follow(userID))
+        } catch (error) {
+            console.log(error.response.data.message)
+        }
+    }
+
     useEffect(()=>{
         fetchUser();
         fetchRecipes();
@@ -108,6 +162,10 @@ export const Profile = ({isMine}) => {
         setAddPostOpen(value);
       };
 
+      const handleAvatarChange = () =>{
+        
+      }
+
   return (
     <div>
         {/* navbar */}
@@ -116,9 +174,22 @@ export const Profile = ({isMine}) => {
         </div>
 
         <div className="profileContent">
-            <div className="profileHeader"></div>
+            <input 
+                type="file" 
+                accept="image/*"
+                style={{display: 'none'}}
+                ref={avatarInputRef}
+            />
+            <input 
+                type="file" 
+                accept="image/*"
+                style={{display: 'none'}}
+                ref={coverInputRef}
+            />
+            
+            <div className="profileHeader" onClick={handleCoverClick}></div>
 
-            <div className="profileAvatarCon">
+            <div className="profileAvatarCon" onClick={handleAvatarClick}>
             <Avatar
             sx={{ bgcolor: '#EB5757', height : '110px', width: '110px', fontSize: "48px"}}
             alt={firstName}
@@ -131,10 +202,15 @@ export const Profile = ({isMine}) => {
             <div className="profiledetails">
                 <div className="profiledetailsinner">
                     <div className="name"> {firstName} {lastName} </div>
-                    <p className='handle'>@{handle}</p>
+                    {editHandle && isMine==true?
+                        <textarea type="text" placeholder='Add a handle'  autoFocus value={handleEdit} onBlur={handleChangeHandle} onChange={(event)=>{setHandleEdit(event.target.value.toLowerCase())}} rows={1} spellCheck/>
+                        :
+                        <p className='handle' onClick={()=> setEditHandle(true)} >@{handle}</p>
+
+                    }
                     {!isMine &&
                     <div className="actionButtons">
-                        <div className={` followButton ${followed? 'followed' : ''}`} onClick={()=> setFollowed(!followed)}> {followed? 'Following' : 'Follow'}</div>
+                        <div className={` followButton ${currentUser.following.includes(userID)? 'followed' : ''}`} onClick={handleFollow}> {currentUser.following.includes(userID)? 'Following' : 'Follow'}</div>
                         <div className="moreButton">. . .</div>
                     </div>
                     }

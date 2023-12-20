@@ -18,12 +18,17 @@ import Tooltip from '@mui/material/Tooltip';
 import { SearchBar } from '../SearchBar/SearchBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../Redux/userSlice';
-import { Dialog, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { CircularProgress, Dialog, DialogContent, DialogTitle, TextField } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
 import VideocamOutlinedIcon from '@mui/icons-material/VideocamOutlined';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
+import { storage } from '../../firebaseConfig';
+import {  getDownloadURL, ref, uploadBytes } from "@firebase/storage";
+import axios from 'axios';
 
-export const AppNavBar = ({addPostOpen, setAddPostOpen}) => {
+
+
+export const AppNavBar = ({addPostOpen, setAddPostOpen, handleSearchInputChange, handleSearch}) => {
     const user = useSelector((state) => state.user.currentUser);
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [isSticky, setIsSticky] = useState(false);
@@ -35,7 +40,10 @@ export const AppNavBar = ({addPostOpen, setAddPostOpen}) => {
     const imageInputRef = useRef(null)
     const textareaRef = useRef(null);
     const [selectedVideo, setSelectedVideo] = useState(null);
+    const [selectedVideoFile, setSelectedVideoFile] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
+    const [selectedImageFile, setSelectedImageFile] = useState(null);
+    const [uploadLoading, setUploadLoading] = useState(false)
     const dispatch = useDispatch();
 
     const handleDrawerToggle = () => {
@@ -56,7 +64,7 @@ export const AppNavBar = ({addPostOpen, setAddPostOpen}) => {
     };
     const handleVideoChange = (event) => {
       const file = event.target.files[0];
-  
+      setSelectedVideoFile(file)
       if (file) {
         const reader = new FileReader();
         reader.onloadend = () => {
@@ -67,7 +75,7 @@ export const AppNavBar = ({addPostOpen, setAddPostOpen}) => {
     };
     const handleImageChange = (event) => {
       const file = event.target.files[0];
-  
+      setSelectedImageFile(file);
       if (file) {
         const reader = new FileReader();
         reader.onloadend = () => {
@@ -76,6 +84,63 @@ export const AppNavBar = ({addPostOpen, setAddPostOpen}) => {
         reader.readAsDataURL(file);
       }
     };
+
+    const uploadFile = (file) => {
+      return new Promise((resolve, reject) => {
+        const storageRef = ref(storage, `recipeFiles/${file.name + Date.now()}`);
+        
+        const uploadTask = uploadBytes(storageRef, file);
+    
+        uploadTask.then(() => {
+          getDownloadURL(storageRef)
+            .then((downloadURL) => {
+              console.log("File uploaded successfully. Download URL:", downloadURL);
+              resolve(downloadURL);
+            })
+            .catch((error) => {
+              console.error("Error getting download URL:", error);
+              reject(error);
+            });
+        }).catch((error) => {
+          console.error("Error uploading file:", error);
+          reject(error);
+        });
+      });
+    };
+
+    const uploadRecipe = async () => {
+      setUploadLoading(true);
+    
+      try {
+        // Start both file uploads simultaneously
+        const [videoUrl, imgUrl] = await Promise.all([
+          uploadFile(selectedVideoFile),
+          uploadFile(selectedImageFile),
+        ]);
+    
+        // Check if any of the uploads failed
+        
+    
+        // Proceed with the rest of the logic if uploads are successful
+        if (title && recipeDetails && videoUrl && imgUrl) {
+          const res = await axios.post("/api/recipes/", {
+            title,
+            description: recipeDetails,
+            imgUrl,
+            videoUrl,
+          });
+          console.log(res.data);
+          setUploadLoading(false);
+        } else {
+          console.log("Please fill all details");
+          setUploadLoading(false);
+        }
+      } catch (error) {
+        console.log(error);
+        setUploadLoading(false);
+      }
+    };
+    
 
     const handleTextareaChange = () => {
       if (textareaRef.current) {
@@ -156,7 +221,7 @@ export const AppNavBar = ({addPostOpen, setAddPostOpen}) => {
 
             {/* searchBar */}
             <div className="navSearchBar">
-            <SearchBar />
+            <SearchBar onInputChange={handleSearchInputChange} onSearch={handleSearch}/>
             </div>
 
             {/* Avatar  */}
@@ -345,7 +410,7 @@ export const AppNavBar = ({addPostOpen, setAddPostOpen}) => {
                       }
                       {selectedVideo &&
                         <div className="vidCon">
-                          <video controls width="300" height="200">
+                          <video controls  height="200">
                           <source src={selectedVideo} type="video/mp4" />
                           Your browser does not support the video tag.
                           </video>
@@ -370,8 +435,13 @@ export const AppNavBar = ({addPostOpen, setAddPostOpen}) => {
                       </div>
                     </div>
 
-                    <div className={`post ${title && recipeDetails? "active" : "" }`}>
-                      Post
+                    <div className={`post ${title && recipeDetails? "active" : "" }`} onClick={uploadRecipe}>
+                      {uploadLoading?
+                        <CircularProgress size={25} sx={{color: '#fff'}}/>
+                        :
+                        "Post"
+                      }
+                      
                     </div>
                   </div>
 

@@ -92,13 +92,12 @@
         }
         .recipeText{
             max-height: 300px;
-            overflow: scroll;
+            overflow: auto;
             @media (max-height: 700px) {
                 max-height: 200px;
             }
             textarea{
                 width: 100%;
-                
                 font-family: "Poppins";
                 font-size: 1.4rem;
                 border: none;

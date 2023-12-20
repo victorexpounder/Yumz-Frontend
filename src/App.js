@@ -18,6 +18,7 @@ import { Profile } from "./Pages/Profile/Profile";
 import { MealPlanning } from "./Pages/MealPlanning/MealPlanning";
 import { useSelector } from "react-redux";
 import { Children } from "react";
+import { ForgotPassword } from "./Pages/ForgotPassword/ForgotPassword";
 
 function App(){
 
@@ -40,10 +41,14 @@ function App(){
                     <Route index element={<HomePage></HomePage>} />
                     <Route path="services" element={<Services></Services>} />
                     <Route path="login" element={ <RequireNoAuth> <Login></Login> </RequireNoAuth> } />
+                    <Route path="forgot-password">
+                        <Route index element={<RequireNoAuth> <ForgotPassword></ForgotPassword> </RequireNoAuth>}></Route>
+                        
+                    </Route>
                     <Route path="signUp" element={<RequireNoAuth> <SignUp></SignUp> </RequireNoAuth> } />
                     <Route path="feed" element={<RequireAuth> <DashBoard/> </RequireAuth> } />
                     <Route path="favorites" element={<RequireAuth> <Favorites/> </RequireAuth> } />
-                    <Route path="recipeSingle" element={ <RequireAuth> <SingleRecipe/> </RequireAuth> } />
+                    <Route path="recipeSingle/:recipeID" element={ <RequireAuth> <SingleRecipe/> </RequireAuth> } />
                     <Route path="profile">
                         <Route index element={<RequireAuth> <Profile isMine={true}/> </RequireAuth> } />
                         <Route path="find/:userID" element={<RequireAuth><Profile isMine={false}/></RequireAuth> } />
