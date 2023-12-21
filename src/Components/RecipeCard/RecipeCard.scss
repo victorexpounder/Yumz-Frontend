@@ -65,8 +65,11 @@
         }
         .figures{
             display: flex;
+            align-items: center;
             gap: 10px;
             color: #545454;
+            font-family: UberMoveText, system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 13px;
             .likes{
                 display: flex;
                 align-items: center;
@@ -81,6 +84,12 @@
                 align-items: center;
                 gap: 5px;
                 cursor: pointer;
+            }
+            .dot{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 10px;
             }
         }
     }

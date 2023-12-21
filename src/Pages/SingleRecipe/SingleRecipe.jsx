@@ -15,6 +15,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import girl1 from '../../Assets/girl1.png'
 import { favorite } from '../../Redux/userSlice';
 import { format } from 'timeago.js';
+import { fetchSuccess, like } from '../../Redux/recipeSlice';
+import { Comment } from '../../Components/Comment/Comment';
+import { add, fetchCommentsSuccess } from '../../Redux/commentSlice';
+import commentimg from '../../Assets/comment.svg'
+
 
 export const SingleRecipe = () => {
     
@@ -23,27 +28,24 @@ export const SingleRecipe = () => {
    const [play, setPlay] = useState(false)
    const [recipeFetchLoading, setrecipeFetchLoading] = useState(false);
    const [sideRecipes, setSideRecipes] = useState();
-   const [recipe, setRecipe] = useState();
    const [creator, setcreator] = useState();
    const [commentText, setCommentText] = useState();
    const [addPostOpen, setAddPostOpen] = useState(false);
    const {recipeID} = useParams();
    const dispatch = useDispatch();
-   
    const currentUser = useSelector((state) => state.user.currentUser);
-   const handleLike = () =>{
-    setLiked(!liked);
-  }
+   const recipe = useSelector((state) => state.recipe.recipe)
+   const comments = useSelector((state) => state.comments.comments)
+   
 
   const fetchSideRecipes = async() =>{
     try{
       
-      const res = await axios.get(`/api/recipes/tags?categories=rice,nigerian`)
+      const res = await axios.get(`/api/recipes/tags?categories=${recipe?.title.replace(/ /g, ",").toLowerCase()}`)
       console.log(res.data)
       setSideRecipes(res.data)
       
     }catch(err){
-      
       console.log(err)
     }
   }
@@ -52,7 +54,7 @@ export const SingleRecipe = () => {
     try {
       setrecipeFetchLoading(true)
       const res = await axios.get(`/api/recipes/find/${recipeID}`)
-      setRecipe(res.data)
+      dispatch(fetchSuccess(res.data))
       setrecipeFetchLoading(false)
     } catch (error) {
       setrecipeFetchLoading(false)
@@ -94,6 +96,49 @@ export const SingleRecipe = () => {
 
   }
 
+  const handleLike = async() =>{
+    try {
+      if(recipe.likes.includes(currentUser._id))
+      {
+        const res = await axios.put(`/api/users/unlike/${recipe._id}`)
+        console.log(res.data);
+        dispatch(like(currentUser._id))
+      }else{
+        const res = await axios.put(`/api/users/like/${recipe._id}`)
+        console.log(res.data);
+        dispatch(like(currentUser._id))
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+  const fetchComments = async() =>{
+      try {
+          const res = await axios.get(`/api/comments/${recipeID}`);
+          dispatch(fetchCommentsSuccess(res.data))
+      } catch (error) {
+        console.log(error);
+      }
+  }
+
+  const addComment = async() =>{
+    if(commentText)
+    {
+      try {
+        const res = await axios.post(`/api/comments/`, {
+          recipeId: recipe._id, description : commentText
+        });
+        dispatch(add(res.data))
+        
+      } catch (error) {
+        console.log(error)
+      }
+
+    }
+  }
+
   useEffect(()=>{
     fetchRecipe();
   }, [])
@@ -101,6 +146,7 @@ export const SingleRecipe = () => {
   useEffect(()=>{
     fetchCreator();
     fetchSideRecipes();
+    fetchComments();
   }, [recipe])
 
   return (
@@ -168,12 +214,12 @@ export const SingleRecipe = () => {
 
               <div className="figures">
                 <div className="likes">
-                  <RecommendIcon onClick={handleLike} className={liked? 'likeButton' : ''}/>
+                  <RecommendIcon onClick={handleLike} className={recipe?.likes.includes(currentUser._id)? 'likeButton' : ''}/>
                 <p>{recipe?.likes.length}</p>
                 </div>
                 <div className="comments">
                   <CommentIcon/>
-                  <p> {data.comments} </p>
+                  <p> {comments.length} </p>
                 </div>
               </div>
 
@@ -183,7 +229,7 @@ export const SingleRecipe = () => {
                         <Avatar
                           sx={{ bgcolor: '#EB5757', width: '35px', height: '35px', cursor: 'pointer'}}
                           alt="Remy Sharp"
-                          src={girl1}
+                          src={currentUser.img}
                           className='avatar'
                           >
                           {data.Creator.name.charAt(0)}
@@ -196,63 +242,25 @@ export const SingleRecipe = () => {
                           style={{ resize: 'none' }}
                           rows={2}
                         />
-                        <div className={`button ${commentText? 'active' : ''}`}>
+                        <div className={`button ${commentText? 'active' : ''}`} onClick={addComment}>
                           Send
                         </div>
                       </div>
                   </div>
 
                   <div className="recipeComments">
-                    <div className={`comment ${!play? 'notplay' : ''}`}>
-                      <Link to={'/profile'} style={{textDecoration: 'none', color: '#000'}}>
-                          <Avatar
-                            sx={{ bgcolor: '#EB5757', width: '35px', height: '35px', cursor: 'pointer'}}
-                            alt="Remy Sharp"
-                            src="	https://images.pexels.com/photos/14162172/pexels-photo-14162172.jpeg?auto=compress&cs=tinysrgb&w=800"
-                            className='avatar'
-                            >
-                            {data.Creator.name.charAt(0)}
-                          </Avatar>
-                        </Link>
+                    {comments?.length == 0 &&
+                      <div className="noComment" style={{display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'}}>
+                        <img src={commentimg} alt="" width={'50%'} height={'50%'}/>
+                        <p>Be the first to comment</p>
 
-                        <div className="commentDetails">
-                          <div className="name">
-                              <h1>@Jawnexplores</h1>
-                              <p>4 days ago</p>
-                          </div>
+                      </div>
+                    }
 
-                          <div className="commentDescription">
-                            <p>
-                            Imagine being a fan of this chef in the fn Philippines and then getting into your regular Jeepney after work and finding yourself sitting next to the guy. Blessed
-                            </p>
-                          </div>
-                        </div>
-                    </div>
-                    <div className={`comment ${!play? 'notplay' : ''}`}>
-                      <Link to={'/profile'} style={{textDecoration: 'none', color: '#000'}}>
-                          <Avatar
-                            sx={{ bgcolor: '#EB5757', width: '35px', height: '35px', cursor: 'pointer'}}
-                            alt="Remy Sharp"
-                            src="	https://images.pexels.com/photos/14162172/pexels-photo-14162172.jpeg?auto=compress&cs=tinysrgb&w=800"
-                            className='avatar'
-                            >
-                            {data.Creator.name.charAt(0)}
-                          </Avatar>
-                        </Link>
-
-                        <div className="commentDetails">
-                          <div className="name">
-                              <h1>@Jawnexplores</h1>
-                              <p>4 days ago</p>
-                          </div>
-
-                          <div className="commentDescription">
-                            <p>
-                            Imagine being a fan of this chef in the fn Philippines and then getting into your regular Jeepney after work and finding yourself sitting next to the guy. Blessed
-                            </p>
-                          </div>
-                        </div>
-                    </div>
+                    {comments?.map((comment)=>(
+                        <Comment comment={comment} play={play} id={comment._id}/>
+                    ))}
+                    
                   </div>
                 </div>
 

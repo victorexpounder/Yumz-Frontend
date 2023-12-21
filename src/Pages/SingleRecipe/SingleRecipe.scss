@@ -210,7 +210,12 @@
                             .name{
                                 display: flex;
                                 align-items: center;
-                                gap: 0.5rem;
+                                justify-content: space-between;
+                                .nameD{
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 0.5rem;
+                                }
                                 h1{
                                     font-size: 13px;
                                 }

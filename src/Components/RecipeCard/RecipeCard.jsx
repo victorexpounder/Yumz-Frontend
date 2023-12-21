@@ -19,6 +19,7 @@ export const RecipeCard = ({recipeData, isMine, isFavorites, isSide, dashboard})
   const [liked, setLiked] = useState(false);
   const [favorited, setFavorited] = useState(false);
   const [Creator, setcreator] = useState()
+  const [comments, setComments] = useState()
   const currentUser = useSelector((state) => state.user.currentUser);
   const {favorites} = currentUser;
   const dispatch = useDispatch();
@@ -55,9 +56,21 @@ export const RecipeCard = ({recipeData, isMine, isFavorites, isSide, dashboard})
 
   }
   
+
+
+  const fetchComments = async() =>{
+    try {
+        const res = await axios.get(`/api/comments/${_id}`);
+        setComments(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+}
+
   useEffect(()=>{
     fetchCreator();
     checkFavorite();
+    fetchComments();
   }, [recipeData])
 
   return (
@@ -120,12 +133,13 @@ export const RecipeCard = ({recipeData, isMine, isFavorites, isSide, dashboard})
               {!isSide &&
                 <div className="figures">
                   <div className="likes"> 
-                    <RecommendIcon onClick={() => setLiked(!liked)} className={liked? 'likeButton' : ''}/>
-                  <p>{likes.length}</p>
+                  <p> <strong>{likes.length}</strong> likes</p>
+                  </div>
+                  <div className="dot">
+                    .
                   </div>
                   <div className="comments">
-                    <CommentIcon/>
-                    <p> 236 </p>
+                    <p> <strong>{comments?.length}</strong> comments </p>
                   </div>
                 </div>
               }

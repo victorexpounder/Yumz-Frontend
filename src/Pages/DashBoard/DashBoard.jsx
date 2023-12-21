@@ -94,7 +94,7 @@ export const DashBoard = () => {
       {/* other app content */}
       <div className="contentApp">
         {/* categories */}
-        <Categories/>
+        <Categories setRecipePosts={setRecipePostData}/>
 
         {/* searchBar */}
         <div className={`contentSearch ${isSticky? 'sticky' : ''}`}>

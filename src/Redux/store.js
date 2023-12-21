@@ -1,5 +1,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import userReducer from './userSlice'
+import recipeReducer from './recipeSlice'
+import commentsReducer from './commentSlice'
 import {
     persistStore,
     persistReducer,
@@ -18,7 +20,7 @@ import {
     storage,
   }
 
-const rootReducer = combineReducers({user : userReducer})
+const rootReducer = combineReducers({user : userReducer, recipe : recipeReducer, comments : commentsReducer})
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 export const store =  configureStore({

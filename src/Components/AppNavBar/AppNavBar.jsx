@@ -36,6 +36,7 @@ export const AppNavBar = ({addPostOpen, setAddPostOpen, handleSearchInputChange,
     const {firstName, lastName, handle, img} = currentUser;
     const [title, setTitle] = useState();
     const [recipeDetails, setRecipeDetails] = useState();
+    const [recipeTags, setRecipeTags] = useState();
     const videoInputRef = useRef(null)
     const imageInputRef = useRef(null)
     const textareaRef = useRef(null);
@@ -126,6 +127,7 @@ export const AppNavBar = ({addPostOpen, setAddPostOpen, handleSearchInputChange,
           const res = await axios.post("/api/recipes/", {
             title,
             description: recipeDetails,
+            category: recipeTags.split(","),
             imgUrl,
             videoUrl,
           });
@@ -258,7 +260,7 @@ export const AppNavBar = ({addPostOpen, setAddPostOpen, handleSearchInputChange,
         <SwipeableDrawer anchor="left" open={drawerOpen} onClose={handleDrawerToggle} onOpen={handleDrawerToggle} className='drawApp'>
             
             <Box
-              sx={{ width: 250 }}
+              sx={{ width: 300 }}
               role="presentation"
               onClick={handleDrawerToggle}
               className="drawerContentApp"
@@ -435,7 +437,16 @@ export const AppNavBar = ({addPostOpen, setAddPostOpen, handleSearchInputChange,
                       </div>
                     </div>
 
-                    <div className={`post ${title && recipeDetails? "active" : "" }`} onClick={uploadRecipe}>
+                    <textarea
+                      ref={textareaRef}
+                      type="text"
+                      placeholder='Tags, seperate each tag with a comma' 
+                      style={{ resize: 'none' }}
+                      onChange={(e)=>{setRecipeTags(e.target.value); handleTextareaChange()}}
+                      value={recipeTags}
+                    />
+
+                    <div className={`post ${title && recipeDetails && selectedImage? "active" : "" }`} onClick={uploadRecipe}>
                       {uploadLoading?
                         <CircularProgress size={25} sx={{color: '#fff'}}/>
                         :
