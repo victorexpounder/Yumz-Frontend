@@ -252,18 +252,18 @@ export const Profile = ({isMine}) => {
                 type="file" 
                 accept="image/*"
                 style={{display: 'none'}}
-                ref={avatarInputRef}
+                ref={_id === currentUser._id? avatarInputRef : null}
                 onChange={handleAvatarChange}
             />
             <input 
                 type="file" 
                 accept="image/*"
                 style={{display: 'none'}}
-                ref={coverInputRef}
+                ref={_id === currentUser._id? coverInputRef : null}
                 onChange={handleCoverChange}
             />
             
-            <div className="profileHeader" onClick={handleCoverClick} style={{backgroundImage: `url(${coverImg})`}}> {!coverImg? "Tap to Upload Image" : ""} </div>
+            <div className="profileHeader" onClick={handleCoverClick} style={{backgroundImage: `url(${coverImg})`}}> {!coverImg && isMine? "Tap to Upload Image" : ""} </div>
 
             <div className="profileAvatarCon" onClick={handleAvatarClick}>
             <Avatar
@@ -336,7 +336,7 @@ export const Profile = ({isMine}) => {
 
             {isMine &&
                 <div className="addButton" onClick={()=> setAddPostOpen(true)}>
-                <AddOutlinedIcon style={{fontSize: '2.5rem', backgroundColor: '#EB5757', color: '#fff', borderRadius: '50%', padding: '0.3rem'}} />
+                <AddOutlinedIcon style={{fontSize: '3rem', backgroundColor: '#EB5757', color: '#fff', borderRadius: '50%', padding: '0.3rem'}} />
                 </div>
             }
         </div>

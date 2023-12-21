@@ -12,6 +12,7 @@ import {format} from 'timeago.js'
 import { useDispatch, useSelector } from 'react-redux';
 import { port } from '../../port';
 import { favorite } from '../../Redux/userSlice';
+import { IconButton } from '@mui/material';
 
 export const RecipeCard = ({recipeData, isMine, isFavorites, isSide, dashboard}) => {
 
@@ -103,7 +104,12 @@ export const RecipeCard = ({recipeData, isMine, isFavorites, isSide, dashboard})
                 <Link to={`/recipeSingle/${_id}`} style={{textDecoration: 'none', color: '#000'}}>
                   <h1>{title}</h1>
                 </Link>
-              
+                {isMine &&
+                  <IconButton style={{padding: 2, color: '#EB5757'}}>
+                    <DeleteIcon fontSize='small'/>
+                  </IconButton>
+                }
+                
               </div>
               {/* crator's avatar, name and post time */}
               <div className="creatorTime">

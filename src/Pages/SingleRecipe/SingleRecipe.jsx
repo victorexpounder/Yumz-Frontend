@@ -19,7 +19,7 @@ import { fetchSuccess, like } from '../../Redux/recipeSlice';
 import { Comment } from '../../Components/Comment/Comment';
 import { add, fetchCommentsSuccess } from '../../Redux/commentSlice';
 import commentimg from '../../Assets/comment.svg'
-
+import ShareIcon from '@mui/icons-material/Share';
 
 export const SingleRecipe = () => {
     
@@ -139,6 +139,18 @@ export const SingleRecipe = () => {
     }
   }
 
+  const copyToClipboard = () => {
+    const currentUrl = window.location.href;
+
+    navigator.clipboard.writeText(currentUrl)
+      .then(() => {
+        alert('URL copied to clipboard');
+      })
+      .catch((err) => {
+        console.error('Unable to copy to clipboard', err);
+      });
+  };
+
   useEffect(()=>{
     fetchRecipe();
   }, [])
@@ -188,22 +200,25 @@ export const SingleRecipe = () => {
 
                 <div className="creatorTime">
                   {/* creators Avatar */}
-                  <Avatar
-                    sx={{ bgcolor: '#EB5757', width: '30px', height: '30px', cursor: 'pointer'}}
-                    alt="Remy Sharp"
-                    src={creator?.img}
-                    className='avatar'
-                    >
-                    {creator?.firstName.charAt(0)}
-                  </Avatar>
+                  <Link to={recipe.userId == currentUser._id? '/profile' : `/profile/find/${recipe.userId}`} style={{textDecoration: 'none', }}>
+                    <Avatar
+                      sx={{ bgcolor: '#EB5757', width: '30px', height: '30px', cursor: 'pointer'}}
+                      alt="Remy Sharp"
+                      src={creator?.img}
+                      className='avatar'
+                      >
+                      {creator?.firstName.charAt(0)}
+                    </Avatar>
+                  </Link>
 
                   {/* creators name */}
                   {recipeFetchLoading?
                     <Skeleton variant="text" sx={{ fontSize: '14px', width: '30%'}} />
                     :
-                    <h8>{creator?.firstName} {creator?.lastName} </h8>
+                    <Link to={recipe.userId == currentUser._id? '/profile' : `/profile/find/${recipe.userId}`} style={{textDecoration: 'none', color: 'inherit'}}>
+                      <h8>{creator?.firstName} {creator?.lastName} </h8>
+                    </Link>
                   }
-
                   <strong>.</strong>
 
                   {/* time */}
@@ -219,7 +234,10 @@ export const SingleRecipe = () => {
                 </div>
                 <div className="comments">
                   <CommentIcon/>
-                  <p> {comments.length} </p>
+                  <p> {comments?.length} </p>
+                </div>
+                <div className="comments" onClick={copyToClipboard}>
+                  <ShareIcon/>
                 </div>
               </div>
 

@@ -107,7 +107,7 @@ export const DashBoard = () => {
         <RecipePosts recipePostData={recipePostData} Fetchfailure={recipeFetchfailure} FetchSuccess={recipeFetchSuccess} fetchLoading={recipeFetchLoading} Dashboard={true}/>
 
         <div className="addButton" onClick={()=>{setAddPostOpen(true)}}>
-            <AddOutlinedIcon style={{fontSize: '2.5rem', backgroundColor: '#EB5757', color: '#fff', borderRadius: '50%', padding: '0.3rem'}} />
+            <AddOutlinedIcon style={{fontSize: '3rem', backgroundColor: '#EB5757', color: '#fff', borderRadius: '50%', padding: '0.3rem'}} />
         </div>
       </div>
 

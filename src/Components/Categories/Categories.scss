@@ -1,5 +1,6 @@
 .categories{
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100%;
@@ -45,6 +46,27 @@
                line-height: 16px;
                font-family: UberMoveText, sans-serif;
                font-weight: 500;
+            }
+        }
+    }
+    .types{
+        display: flex;
+        gap: 0.5rem;
+        width: 100%;
+        padding: 0.5rem;
+        font-family: "Poppins";
+        .cirCon{
+            background-color: rgb(232, 232, 232);
+            padding: 0.6rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.5s;
+            &:hover{
+                background-color: rgb(185, 185, 185);
+            }
+            &.active{
+                background-color: #EB5757;
+                color: #fff;
             }
         }
     }

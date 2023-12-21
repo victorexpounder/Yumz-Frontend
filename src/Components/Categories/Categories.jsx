@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import pizza from '../../Assets/pizza.png'
 import './Categories.scss'
 import axios from 'axios'
@@ -17,11 +17,56 @@ export const Categories = ({setRecipePosts}) => {
         {name: 'Italian', image: "	https://cn-geo1.uber.com/static/mobile-content/eats/cuisine-filters/v1/Italian.png"},
         {name: 'American', image: "	https://cn-geo1.uber.com/static/mobile-content/eats/cuisine-filters/v1/American.png"},
     ]
+    const [feed, setFeed] = useState(true);
+    const [trending, setTrending] = useState(false);
+    const [following, setFollowing] = useState(false);
 
     const fetchByTags = async(name)=>{
       const res = await axios.get(`/api/recipes/tags?categories=${name.toLowerCase()}`)
       setRecipePosts(res.data);
-      
+      setFeed(false);
+      setFollowing(false);
+      setTrending(false);
+    }
+    const fetchData = async() =>{
+      try{
+        const res = await axios.get(`/api/recipes/random`)
+        console.log(res.data)
+        setRecipePosts(res.data)
+        setFeed(true);
+        setFollowing(false);
+        setTrending(false)
+      }catch(err){
+        
+        console.log(err)
+      }
+    }
+    const fetchTrending = async() =>{
+      try{
+        const res = await axios.get(`/api/recipes/trend`)
+        console.log(res.data)
+        setRecipePosts(res.data)
+        setFeed(false);
+        setFollowing(false);
+        setTrending(true)
+      }catch(err){
+        
+        console.log(err)
+      }
+    }
+
+    const fetchFollowed = async() =>{
+      try{
+        const res = await axios.get(`/api/recipes/followedVid`)
+        console.log(res.data)
+        setRecipePosts(res.data)
+        setFeed(false);
+        setFollowing(true);
+        setTrending(false);
+      }catch(err){
+        
+        console.log(err)
+      }
     }
 
   return (
@@ -35,7 +80,11 @@ export const Categories = ({setRecipePosts}) => {
                 <p>{name}</p>
             </div>
           )})}
-            
+        </div>
+        <div className="types">
+          <div className={`cirCon ${feed? 'active' : ''}`} onClick={fetchData}> Feed </div>
+          <div className={`cirCon ${trending? 'active' : ''}`} onClick={fetchTrending}> Trending </div>
+          <div className={`cirCon ${following? 'active' : ''}`} onClick={fetchFollowed}> Following </div>
         </div>
     </div>
   )

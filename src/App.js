@@ -19,6 +19,7 @@ import { MealPlanning } from "./Pages/MealPlanning/MealPlanning";
 import { useSelector } from "react-redux";
 import { Children } from "react";
 import { ForgotPassword } from "./Pages/ForgotPassword/ForgotPassword";
+import { ResetPassword } from "./Pages/ForgotPassword/ResetPassword";
 
 function App(){
 
@@ -43,7 +44,7 @@ function App(){
                     <Route path="login" element={ <RequireNoAuth> <Login></Login> </RequireNoAuth> } />
                     <Route path="forgot-password">
                         <Route index element={<RequireNoAuth> <ForgotPassword></ForgotPassword> </RequireNoAuth>}></Route>
-                        
+                        <Route path="reset/:token" element={<RequireNoAuth> <ResetPassword></ResetPassword> </RequireNoAuth>}></Route>
                     </Route>
                     <Route path="signUp" element={<RequireNoAuth> <SignUp></SignUp> </RequireNoAuth> } />
                     <Route path="feed" element={<RequireAuth> <DashBoard/> </RequireAuth> } />

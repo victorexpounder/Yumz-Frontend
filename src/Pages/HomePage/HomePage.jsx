@@ -12,6 +12,7 @@ import Slide from '@mui/material/Slide';
 import Zoom from '@mui/material/Zoom';
 import Collapse from '@mui/material/Collapse';
 import { Link } from 'react-router-dom'
+import share from '../../Assets/share.svg'
 export const HomePage = () => {
   const [checked, setChecked] = useState(false)
 
@@ -28,7 +29,7 @@ export const HomePage = () => {
 
           <div className="fastWidget">
             <div className="content">
-            <p>More than Healthy </p>
+            <p>Various Types Recipes</p>
             <img src={berry} alt="" />
             </div>
           </div>
@@ -38,13 +39,13 @@ export const HomePage = () => {
           {/* heading text */}
           
           <h1>
-          Be The Fastest In Delivering Your <span>Food</span>
+            Share, Learn, And Explore <span>Recipes</span>
           </h1>
           
 
           {/* paragraph text */}
           <p className='iText'>
-          Our job is to filling your tummy with delicious food and with fast and free delivery
+            Share recipe content, connect and learn from a vast list of recipes
           </p>
           {/* buttons */}
 
@@ -73,7 +74,7 @@ export const HomePage = () => {
         
         <div className="rightDetails">
           <Fade in={checked} style={{ transitionDelay: checked ? '500ms' : '0ms' }}>
-        <img src={woman} alt="" />
+        <img src={share} alt="" />
           </Fade>
 
           
@@ -82,9 +83,7 @@ export const HomePage = () => {
         </svg>
           
          
-          <Slide direction="up" in={checked} mountOnEnter unmountOnExit >
-        <img src={foodWidget} alt="" className='foodWidget'/>
-          </Slide>
+          
         <div className="rectangle-8" style={{position: "absolute"}}></div>
         <div className="rectangle-8"></div>
         </div>
