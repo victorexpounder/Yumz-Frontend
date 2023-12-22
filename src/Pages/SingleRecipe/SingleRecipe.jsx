@@ -127,7 +127,7 @@ export const SingleRecipe = () => {
     if(commentText)
     {
       try {
-        const res = await axios.post(`/api/comments/`, {
+        const res = await axios.post(`/api/comments`, {
           recipeId: recipe._id, description : commentText
         });
         dispatch(add(res.data))
