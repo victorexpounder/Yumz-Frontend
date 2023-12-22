@@ -200,7 +200,7 @@ export const SingleRecipe = () => {
 
                 <div className="creatorTime">
                   {/* creators Avatar */}
-                  <Link to={recipe.userId == currentUser._id? '/profile' : `/profile/find/${recipe.userId}`} style={{textDecoration: 'none', }}>
+                  <Link to={recipe?.userId == currentUser._id? '/profile' : `/profile/find/${recipe?.userId}`} style={{textDecoration: 'none', }}>
                     <Avatar
                       sx={{ bgcolor: '#EB5757', width: '30px', height: '30px', cursor: 'pointer'}}
                       alt="Remy Sharp"
@@ -215,7 +215,7 @@ export const SingleRecipe = () => {
                   {recipeFetchLoading?
                     <Skeleton variant="text" sx={{ fontSize: '14px', width: '30%'}} />
                     :
-                    <Link to={recipe.userId == currentUser._id? '/profile' : `/profile/find/${recipe.userId}`} style={{textDecoration: 'none', color: 'inherit'}}>
+                    <Link to={recipe?.userId == currentUser._id? '/profile' : `/profile/find/${recipe?.userId}`} style={{textDecoration: 'none', color: 'inherit'}}>
                       <h8>{creator?.firstName} {creator?.lastName} </h8>
                     </Link>
                   }
