@@ -257,9 +257,7 @@
                         height: 45px;
                     }
                 }
-                p{
-                    font-size: 20px;
-                }
+               
             }
         }
     }
@@ -268,5 +266,6 @@
         display: flex;
         flex-direction: column;
         padding: 0.5rem 0.5rem;
+        font-family: UberMoveText, system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 }

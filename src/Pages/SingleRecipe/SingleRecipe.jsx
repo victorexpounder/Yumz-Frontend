@@ -7,7 +7,7 @@ import RecommendIcon from '@mui/icons-material/Recommend';
 import CommentIcon from '@mui/icons-material/Comment';
 import { Player, BigPlayButton } from 'video-react';
 import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
-import { IconButton, Skeleton } from '@mui/material';
+import { Alert, IconButton, Skeleton, Snackbar } from '@mui/material';
 import axios from 'axios';
 import { RecipeCard } from '../../Components/RecipeCard/RecipeCard';
 import { Link, useParams } from 'react-router-dom';
@@ -285,7 +285,8 @@ export const SingleRecipe = () => {
             </div>
         </div>
         {play &&
-          <div className="side">
+          <div className="side" style={{display: 'flex', gap: '1rem'}}>
+            <h3>You Might Also Like</h3> 
               {sideRecipes.map((recipe)=>(
                   <RecipeCard recipeData={recipe} isSide={true}/>
               ))
@@ -294,6 +295,8 @@ export const SingleRecipe = () => {
           </div>
         }
         </div>
+
+        
     </div>
   )
 }

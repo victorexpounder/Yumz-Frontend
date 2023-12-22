@@ -18,7 +18,7 @@ import Tooltip from '@mui/material/Tooltip';
 import { SearchBar } from '../SearchBar/SearchBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../Redux/userSlice';
-import { CircularProgress, Dialog, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { Alert, CircularProgress, Dialog, DialogContent, DialogTitle, Snackbar, TextField } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
 import VideocamOutlinedIcon from '@mui/icons-material/VideocamOutlined';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
@@ -45,6 +45,8 @@ export const AppNavBar = ({addPostOpen, setAddPostOpen, handleSearchInputChange,
     const [selectedImage, setSelectedImage] = useState(null);
     const [selectedImageFile, setSelectedImageFile] = useState(null);
     const [uploadLoading, setUploadLoading] = useState(false)
+    const [Posted, setAddPosted] = useState(false);
+
     const dispatch = useDispatch();
 
     const handleDrawerToggle = () => {
@@ -86,9 +88,9 @@ export const AppNavBar = ({addPostOpen, setAddPostOpen, handleSearchInputChange,
       }
     };
 
-    const uploadFile = (file) => {
+    const uploadFile = (file, id) => {
       return new Promise((resolve, reject) => {
-        const storageRef = ref(storage, `recipeFiles/${file.name + Date.now()}`);
+        const storageRef = ref(storage, `recipeFiles/${id}`);
         
         const uploadTask = uploadBytes(storageRef, file);
     
@@ -111,32 +113,41 @@ export const AppNavBar = ({addPostOpen, setAddPostOpen, handleSearchInputChange,
 
     const uploadRecipe = async () => {
       setUploadLoading(true);
-    
+      var recipeId;
       try {
-        // Start both file uploads simultaneously
-        const [videoUrl, imgUrl] = await Promise.all([
-          uploadFile(selectedVideoFile),
-          uploadFile(selectedImageFile),
-        ]);
-    
-        // Check if any of the uploads failed
-        
-    
         // Proceed with the rest of the logic if uploads are successful
-        if (title && recipeDetails && videoUrl && imgUrl) {
-          const res = await axios.post("/api/recipes/", {
+        setAddPostOpen(false);
+        if (title && recipeDetails) {
+          const res = await axios.post("/api/recipes", {
             title,
             description: recipeDetails,
-            category: recipeTags.split(","),
-            imgUrl,
-            videoUrl,
+            category: recipeTags?.split(","),
           });
+          recipeId = res.data._id
           console.log(res.data);
-          setUploadLoading(false);
+          
         } else {
           console.log("Please fill all details");
           setUploadLoading(false);
         }
+
+        const videoId = recipeId + "img"
+        const imageId = recipeId + "video"
+
+        // Start both file uploads simultaneously
+        const [videoUrl, imgUrl] = await Promise.all([
+          uploadFile(selectedVideoFile, videoId),
+          uploadFile(selectedImageFile, imageId),
+        ]);
+
+        const updateres = await axios.put(`/api/recipes/${recipeId}`, {
+          videoUrl,
+          imgUrl
+        });
+
+        setUploadLoading(false);
+        
+        setAddPosted(true);
       } catch (error) {
         console.log(error);
         setUploadLoading(false);
@@ -458,6 +469,17 @@ export const AppNavBar = ({addPostOpen, setAddPostOpen, handleSearchInputChange,
 
                 </div>
             </Dialog>
+
+
+        <Snackbar open={Posted} autoHideDuration={6000} onClose={()=> setAddPosted(false)}>
+          <Alert onClose={()=> setAddPosted(false)} severity="success" sx={{ width: '100%' }}>
+           Recipe Uploaded you might need to refresh to see changes
+          </Alert>
+      </Snackbar>
+
+        <Snackbar open={uploadLoading}  onClose={()=> setUploadLoading(false)} message="Recipe Uploading..." >
+          
+      </Snackbar>
     </div>
   )
 }

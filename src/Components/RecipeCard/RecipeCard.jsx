@@ -12,7 +12,8 @@ import {format} from 'timeago.js'
 import { useDispatch, useSelector } from 'react-redux';
 import { port } from '../../port';
 import { favorite } from '../../Redux/userSlice';
-import { IconButton } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Snackbar } from '@mui/material';
+import { deleteObject, getStorage, ref } from 'firebase/storage';
 
 export const RecipeCard = ({recipeData, isMine, isFavorites, isSide, dashboard}) => {
 
@@ -21,6 +22,8 @@ export const RecipeCard = ({recipeData, isMine, isFavorites, isSide, dashboard})
   const [favorited, setFavorited] = useState(false);
   const [Creator, setcreator] = useState()
   const [comments, setComments] = useState()
+  const [open, setOpen] = useState(false)
+  const [deleted, setDeleted] = useState(false)
   const currentUser = useSelector((state) => state.user.currentUser);
   const {favorites} = currentUser;
   const dispatch = useDispatch();
@@ -68,6 +71,44 @@ export const RecipeCard = ({recipeData, isMine, isFavorites, isSide, dashboard})
     }
 }
 
+  const deletePost = async(id) =>{
+    
+    try {
+      const res = await axios.delete(`/api/recipes/post/${_id}`)
+      const storage = getStorage();
+
+      
+      // Create a reference to the file
+      const imgfileRef = ref(storage, `recipeFiles/${_id}img`);
+      const videofileRef = ref(storage, `recipeFiles/${_id}video`);
+
+      // Delete the file
+      await deleteObject(videofileRef)
+        .then(() => {
+          console.log('File deleted successfully');
+        })
+        .catch((error) => {
+          console.error('Error deleting file:', error);
+        });
+
+      await deleteObject(imgfileRef)
+        .then(() => {
+          console.log('File deleted successfully');
+        })
+        .catch((error) => {
+          console.error('Error deleting file:', error);
+        });
+      
+        console.log("deleted")
+        setOpen(false);
+        setDeleted(true);
+        
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+
   useEffect(()=>{
     fetchCreator();
     checkFavorite();
@@ -105,7 +146,7 @@ export const RecipeCard = ({recipeData, isMine, isFavorites, isSide, dashboard})
                   <h1>{title}</h1>
                 </Link>
                 {isMine &&
-                  <IconButton style={{padding: 2, color: '#EB5757'}}>
+                  <IconButton style={{padding: 2, color: '#EB5757'}} onClick={()=>setOpen(true)}>
                     <DeleteIcon fontSize='small'/>
                   </IconButton>
                 }
@@ -151,6 +192,33 @@ export const RecipeCard = ({recipeData, isMine, isFavorites, isSide, dashboard})
               }
 
             </div>
+
+
+        <Dialog
+          open={Boolean(open)}
+          onClose={()=>setOpen(false)}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+        <DialogTitle id="alert-dialog-title">
+          Are You Sure You Want To Delete {title} {_id}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            This action cannot be undone
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={()=>setOpen(false)}>Disagree</Button>
+          <Button onClick={()=> deletePost(_id)} autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+          <Snackbar open={deleted} autoHideDuration={7000} onClose={()=> setDeleted(false)} message="Recipe Deleted you might need to refresh to see changes" >
+              
+          </Snackbar>
           </div>
   )
 }

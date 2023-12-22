@@ -30,7 +30,7 @@ export const RecipePosts = ({isFavorites, isMine, recipePostData, fetchLoading, 
           <h1 style={{fontFamily: 'Poppins', textAlign: 'center'}}>
             {(recipePostData?.length == 0) && isMine ?
              "Create Your First Recipe"
-             :
+             : 
              "No Recipes Found"
             }
             </h1>
@@ -41,7 +41,7 @@ export const RecipePosts = ({isFavorites, isMine, recipePostData, fetchLoading, 
         {recipePostData?
           recipePostData.map((recipe, index)=>{
             return(
-              <RecipeCard recipeData={recipe} isMine={isMine} isFavorites={isFavorites} key={recipe.id} dashboard={Dashboard}/>
+              <RecipeCard recipeData={recipe} isMine={isMine} isFavorites={isFavorites} key={recipe._id} dashboard={Dashboard}/>
             )
           })
           :
