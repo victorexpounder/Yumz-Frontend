@@ -39,7 +39,7 @@ export const Comment = ({comment, play}) => {
     }, [comment])
   return (
     <div className={`comment ${!play? 'notplay' : ''}`}>
-        <Link to={`/profile/${comment?.userId}`} style={{textDecoration: 'none', color: '#000'}}>
+        <Link to={`/profile/find/${comment?.userId}`} style={{textDecoration: 'none', color: '#000'}}>
             <Avatar
             sx={{ bgcolor: '#EB5757', width: '35px', height: '35px', cursor: 'pointer'}}
             alt="Remy Sharp"
