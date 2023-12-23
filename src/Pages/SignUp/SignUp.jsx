@@ -33,10 +33,10 @@ export const SignUp = () => {
           });
           setSignUpSuccess(res.data);
   
-          await axios.post('/api/auth/signin', {
+          const loginres = await axios.post('/api/auth/signin', {
             email, password
           });
-          dispatch(loginSuccess(res.data));
+          dispatch(loginSuccess(loginres.data));
           console.log(res.data);
           setSignUpLoading(false)
           navigate('/feed');
