@@ -33,7 +33,7 @@ export const SignUp = () => {
           });
           setSignUpSuccess(res.data);
   
-          await axios.post('auth/signin', {
+          await axios.post('/api/auth/signin', {
             email, password
           });
           dispatch(loginSuccess(res.data));
